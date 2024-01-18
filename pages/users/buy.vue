@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 const tokenCookie = useCookie('token');
+const config = useRuntimeConfig();
+
 const token = tokenCookie.value;
 definePageMeta({
   key: route => route.fullPath
@@ -37,7 +39,7 @@ getList(1)
 
 function getImageUrl(imgUrl:string) {
   if (imgUrl != null && imgUrl != undefined && imgUrl != '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`; // Replace with your default image URL
+    return `${config.public.sourceWeb}${imgUrl}`; // Replace with your default image URL
   }
   return `/empty.png`;
 }

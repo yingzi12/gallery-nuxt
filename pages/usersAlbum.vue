@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {reactive, ref, toRefs} from 'vue'
 import {tansParams} from "~/server/utils/urlUtils";
+const config = useRuntimeConfig();
 
 const current = ref(1)
 const slide = ref('first')
@@ -45,7 +46,7 @@ getList(1)
 
 function getImageUrl(imgUrl:string) {
   if (imgUrl != null && imgUrl != undefined && imgUrl != '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`; // Replace with your default image URL
+    return `${config.public.sourceWeb}${imgUrl}`; // Replace with your default image URL
   }
   return `/empty.png`;
 }

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
  const tokenCookie = useCookie('token');
-    const token = tokenCookie.value;
+ const config = useRuntimeConfig();
+
+ const token = tokenCookie.value;
 import {useQuasar} from "quasar";
 
 const router = useRouter();
@@ -107,7 +109,7 @@ function updateStatus(album: any, statusChoise: number) {
 
 function getImageUrl(imgUrl:string) {
   if (imgUrl != null && imgUrl != undefined && imgUrl != '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`; // Replace with your default image URL
+    return `${config.public.sourceWeb}${imgUrl}`; // Replace with your default image URL
   }
   return `/empty.png`;
 }

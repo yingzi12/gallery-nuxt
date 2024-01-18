@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
+const config = useRuntimeConfig();
 
 const route = useRoute();
 
@@ -52,7 +53,7 @@ getList(1)
 
 function imageUrl(album) {
   if (album.sourceUrl != null && album.sourceUrl.startsWith('/image')) {
-    return `https://image.51x.uk/xinshijie${album.sourceUrl}`;
+    return `${config.public.sourceWeb}${album.sourceUrl}`;
   }
   return album.sourceWeb + album.imgUrl;
 }

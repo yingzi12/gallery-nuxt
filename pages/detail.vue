@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
+const config = useRuntimeConfig();
 
 // 接收url里的参数
 const route = useRoute();
@@ -129,14 +130,14 @@ function imageUrlDetail(image) {
   // //console.log(image.sourceUrl)
   // //console.log(image.sourceUrl.startsWith('/image'))
   if (image.sourceUrl != null && image.sourceUrl.startsWith('/image')) {
-    return `https://image.51x.uk/xinshijie${image.sourceUrl}`;
+    return `${config.public.sourceWeb}${image.sourceUrl}`;
   }
   return getValueWithDefault(image.sourceWeb) + image.url;
 }
 
 function imageUrl(album) {
   if (album.sourceUrl != null && album.sourceUrl.startsWith('/image')) {
-    return `https://image.51x.uk/xinshijie${album.sourceUrl}`;
+    return `${config.public.sourceWeb}${album.sourceUrl}`;
   }
   return album.sourceWeb + album.imgUrl;
 }

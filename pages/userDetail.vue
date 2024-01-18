@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 
 import {useRoute} from "vue-router";
+const config = useRuntimeConfig();
 const route = useRoute();
 
 const tokenCookie = useCookie('token');
@@ -110,7 +111,7 @@ async function closeAttention() {
 }
 function getImageUrl(imgUrl) {
   if (imgUrl != null && imgUrl !== undefined && imgUrl !== '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`;
+    return `${config.public.sourceWeb}${imgUrl}`;
   }
   return `/empty.png`; // Default image URL when imgUrl is null, undefined, or empty
 }

@@ -93,12 +93,7 @@ async function getDetail() {
 
 getDetail();
 
-function getImageUrl(imgUrl:string) {
-  if (imgUrl != null && imgUrl != undefined && imgUrl != '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`; // Replace with your default image URL
-  }
-  return `/empty.png`;
-}
+
 
 </script>
 

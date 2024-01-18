@@ -2,6 +2,8 @@
 import {useRoute} from "vue-router";
 import PayaplCard from "~/pages/payaplCard.vue";
 import {useQuasar} from "quasar";
+const config = useRuntimeConfig();
+
 const router = useRouter(); // 使用 Vue Router 的 useRouter 函数
 const amount=ref(0.0);
 const intro=ref("");
@@ -228,7 +230,7 @@ const refreshImages = async () => {
 const  stars=ref(3);
 function getImageUrl(imgUrl) {
   if (imgUrl != null && imgUrl !== undefined && imgUrl !== '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`;
+    return `${config.public.sourceWeb}${imgUrl}`;
   }
   return `/empty.png`; // Default image URL when imgUrl is null, undefined, or empty
 }

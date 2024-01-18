@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 //收藏
 const tokenCookie = useCookie('token');
+const config = useRuntimeConfig();
+
 const token = tokenCookie.value;
 
 definePageMeta({
@@ -63,7 +65,7 @@ const tab = ref('mails')
 
 function getImageUrl(imgUrl:string) {
   if (imgUrl != null && imgUrl != undefined && imgUrl != '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`; // Replace with your default image URL
+    return `${config.public.sourceWeb}${imgUrl}`; // Replace with your default image URL
   }
   return `/empty.png`;
 }

@@ -145,12 +145,7 @@ function updateCharge(charge: number) {
   vipPrice.value = 0.5;
 }
 
-function getImageUrl(imgUrl:string) {
-  if (imgUrl != null && imgUrl != undefined && imgUrl != '') {
-    return `https://image.51x.uk/xinshijie${imgUrl}`; // Replace with your default image URL
-  }
-  return `/empty.png`;
-}
+
 </script>
 
 <template>
