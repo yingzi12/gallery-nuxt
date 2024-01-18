@@ -34,9 +34,7 @@ import {defineProps, onMounted} from 'vue';
 import {useQuasar} from "quasar";
 const $q = useQuasar();
 const tokenCookie = useCookie('token');
-//console.log("++++++++++++++++++++++++++++++++++ "+tokenCookie.value );
 const token=tokenCookie.value;
-//console.log("===================================token:"+token );
 const props = defineProps({
   amount: {
     type: String,
@@ -77,21 +75,17 @@ const props = defineProps({
 
 
 const clientId = 'AWwAGKZhvPE3xSgDh-gRH9sXwNMKDQSzr65ZwaUHp-U7CTbUk-FTnRRjlF0zTpz5LaeDz5rHgcaaekVm'; // 替换为您的 PayPal Client ID
-// const clientToken = ref(null); // 替换为您的 PayPal Client Token
 
 onMounted(async () => {
-  // await getToken();  // 确保先获取 token
   await loadPayPalSDK();  // 等待 SDK 加载
   loadStyleSheet();
   initializePayPalButton();  // 初始化 PayPal 按钮
 });
 
 function loadPayPalSDK() {
-  //console.log("------------loadPayPalSDK-------------")
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
     script.src = `https://www.paypal.com/sdk/js?components=buttons,card-fields&client-id=${clientId}`;
-    // script.dataset.clientToken = clientToken.value;
     script.onload = resolve;
     script.onerror = reject;
     document.head.appendChild(script);
@@ -107,8 +101,6 @@ function initializePayPalButton() {
       createOrder: createOrderCallback,
       onApprove: onApproveCallback,
     });
-
-// Render each field after checking for eligibility
     if (cardField.isEligible()) {
 
       const nameField = cardField.NameField();
@@ -123,7 +115,6 @@ function initializePayPalButton() {
       const expiryField = cardField.ExpiryField();
       expiryField.render("#card-expiry-field-container");
 
-      // Add click listener to submit button and call the submit function on the CardField component
       document
           .getElementById("multi-card-field-button")
           .addEventListener("click", () => {
@@ -141,7 +132,6 @@ function initializePayPalButton() {
 }
 
 function loadStyleSheet() {
-
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.type = 'text/css';
@@ -150,9 +140,7 @@ function loadStyleSheet() {
 }
 //Close 3Ds Dialog
 async function createOrderCallback() {
-
-  try {//server/api/admin/paypal/orders.post.ts
-    //console.log("--------createOrderCallback---------------------token.d+"+tokenCookie.value)
+  try {
     tokenCookie.value=token
     const response = await axios.post("/api/admin/paypal/orders", JSON.stringify({
       amount: discountAmount.value,
@@ -171,9 +159,7 @@ async function createOrderCallback() {
     const orderData = await response.data;
     const message=orderData.message;
 
-    //console.log(orderData);
 
-    //console.log(message);
     if(orderData.code!=200) {
       $q.dialog({
         title: '通知',
@@ -209,8 +195,6 @@ async function createOrderCallback() {
 
 async function onApproveCallback(data, actions) {
   try {
-    //server/api/paypal/ordersCapture.get.ts
-    //console.log("--------onApproveCallback---------------------token.d+"+tokenCookie.value)
     tokenCookie.value=token
     const response = await axios.get(`/api/admin/paypal/ordersCapture?orderId=${data}`, {
       headers: {
@@ -227,9 +211,6 @@ async function onApproveCallback(data, actions) {
     //   (2) Other non-recoverable errors -> Show a failure message
     //   (3) Successful transaction -> Show confirmation or thank you message
     const message=orderData.message;
-    //console.log(orderData);
-
-    //console.log(message);
     if(orderData.code==200) {
       $q.dialog({
         title: '通知',
@@ -269,17 +250,13 @@ async function onApproveCallback(data, actions) {
         orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
     const errorDetail = orderData?.details?.[0];
 
-    // this actions.restart() behavior only applies to the Buttons component
     if (errorDetail?.issue === "INSTRUMENT_DECLINED" && !data.card && actions) {
-      // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-      // recoverable state, per https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
       return actions.restart();
     } else if (
         errorDetail ||
         !transaction ||
         transaction.status === "DECLINED"
     ) {
-      // (2) Other non-recoverable errors -> Show a failure message
       let errorMessage;
       if (transaction) {
         errorMessage = `Transaction ${transaction.status}: ${transaction.id}`;
@@ -291,19 +268,11 @@ async function onApproveCallback(data, actions) {
 
       throw new Error(errorMessage);
     } else {
-      // (3) Successful transaction -> Show confirmation or thank you message
-      // Or go to another URL:  actions.redirect('thank_you.html');
       resultMessage(
           `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`,
       );
-      //console.log(
-      //     log"Capture result",
-      //     orderData,
-      //     JSON.stringify(orderData, null, 2),
-      // );
     }
   } catch (error) {
-    console.error(error);
     resultMessage(
         `Sorry, your transaction could not be processed...<br><br>${error}`,
     );
@@ -333,7 +302,6 @@ async function getAmount() {
     }
   })
   const data = response.data;
-  // //console.log(data)
   if (data.code === 200) {
     discountAmount.value=data.data
   }
