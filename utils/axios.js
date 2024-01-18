@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
     baseURL:"https://gallery-nuxt.vercel.app",
+    // baseURL:"http://127.0.0.1:3000",
     withCredentials: true
 });
 
@@ -27,7 +28,7 @@ axiosInstance.interceptors.request.use(config => {
             // 
             // userStore.clearUser();  // 假设 clearToken 是清空 token 的方法
             // 重定向到登录页面
-            // window.location.href = '/login';
+            window.location.href = '/login';
             // //console.log(`-----------login--------请求---${config.url}-----${token}----`)
         }
     }
