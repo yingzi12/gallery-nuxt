@@ -61,7 +61,7 @@ async function deleteImage(id: number) {
       color: 'negative'
     },
   }).onOk(async () => {
-    const response = await axios.get('/api/admin/userImage/remove?id=' + id.toString()+'&aid=' + aid.toString(), {
+    const response = await axios.get('/api/admin/userImage/remove?id=' + id.toString()+'&aid=' + aid.value, {
       method: 'get',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -87,7 +87,7 @@ async function updateIsFree(image: any, isFree: number) {
       color: 'negative'
     },
   }).onOk(async () => {
-    const response = await axios.get('/api/admin/userImage/updateIsFree?id=' + image.id.toString() + "&isFree=" + isFree.toString(), {
+    const response = await axios.get('/api/admin/userImage/updateIsFree?id=' + image.id + "&isFree=" + isFree, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
