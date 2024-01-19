@@ -110,8 +110,8 @@ onMounted(() => {
     <div class="q-pa-md" style="max-width: 600px">
       <q-card class="my-card">
         <q-card-section>
-          <div class="text-h6">登录</div>
-          <div class="text-subtitle2">登录图集，创建属于你的图集</div>
+          <div class="text-h6">{{$t(`login.login`)}}</div>
+          <div class="text-subtitle2">{{ $t('login.welcome') }}</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -121,7 +121,7 @@ onMounted(() => {
                 v-model="username"
                 :rules="[val => val && val.length > 0 || 'Please enter your account']"
                 filled
-                label="账号 *"
+                :label="$t('login.name')+' *'"
                 lazy-rules
             />
 
@@ -130,7 +130,7 @@ onMounted(() => {
                 v-model="password"
                 :rules="[val => val && val.length > 0 || 'Please enter your password']"
                 filled
-                label="密码 *"
+                :label="$t('login.password')+' *'"
                 type="password"
             />
 
@@ -139,23 +139,23 @@ onMounted(() => {
                 v-model="captcha"
                 :rules="[val => val && val.length > 0 || '请输入验证码']"
                 filled
-                label="验证码 *"
+                :label="$t('login.code')+' *'"
             />
             <div class="q-mb-md">
               <img :src="captchaImage" @click="refreshCaptcha">
-              <div>点击图片刷新验证码</div>
+              <div>{{ $t(`login.refreshCode`) }}</div>
             </div>
 
             <!-- 接受条款切换 -->
-            <q-toggle v-model="accept" label="I accept the license and terms"/>
-
+            <q-toggle v-model="accept" :label="$t(`introTerms`)"></q-toggle>
+            <a href="/privacyPolicy">{{ $t(`useTerms`) }}</a><a href="/use">{{ $t(`privateTerms`) }}</a>
             <div>
-              <q-btn color="primary" label="登录" style="width: 100%;" type="submit"/>
+              <q-btn color="primary" :label="$t(`login.login`) " style="width: 100%;" type="submit"/>
             </div>
 
             <!-- 注册与忘记密码链接 -->
             <div class="extra-links">
-              <router-link to="/register">注册</router-link>
+              <router-link to="/register">{{ $t(`login.regis`) }}</router-link>
               <router-link to="/forgot-password">忘记密码?</router-link>
             </div>
           </q-form>

@@ -3,10 +3,14 @@ export default defineI18nConfig(() => ({
     locale: 'en',
     messages: {
         en: {
+            useTerms: 'Terms Of Use',
+            privateTerms: 'Privacy Policy',
+            introTerms: 'I accept the license and terms',
             welcome: 'Welcome',
             title: 'Album Gallery',
             search:'Search',
             home:'Home',
+            webVip:'VIP',
             trending:'Trending',
             findImage:'Find Images',
             usersAlbum:'User Albums',
@@ -70,7 +74,7 @@ export default defineI18nConfig(() => ({
                     yearFeature1: '12 months duration',
                     // ...年套餐的其他特征...
                     lifetimeFeature1: 'Lifetime updates',
-                    videos: 'Videos',
+                    videos: 'Upload Videos',
                     fullAlbum: 'Full Image Gallery',
                     discount90: '10% Discount on App Purchases',
                     discount95: '5% Discount on App Purchases',
@@ -114,14 +118,18 @@ export default defineI18nConfig(() => ({
                 regis:"Register",
                 sumbit:"Sumbit",
                 welcome:"Welcome to join the gallery and create your own gallery",
-
+                refreshCode:"Click on the picture to refresh the verification code"
             }
         },
         'zh-CN': {
+            useTerms: '使用条款',
+            privateTerms: '隐私条款',
+            introTerms: '我接受许可和条款',
             welcome: '欢迎',
             title: '图集',
             search:"搜索",
             home:'首页',
+            webVip:'会员',
             trending:'最热',
             findImage:'寻找图片',
             usersAlbum:'用户图集',
@@ -185,7 +193,7 @@ export default defineI18nConfig(() => ({
                     yearFeature1: '12个月期限',
                     // ...年套餐的其他特征...
                     lifetimeFeature1: '永久更新',
-                    videos: '视频',
+                    videos: '上传视频',
                     fullAlbum: '全部图库',
                     discount90: 'App消费9折',
                     discount95: 'App消费9.5折',
@@ -230,6 +238,7 @@ export default defineI18nConfig(() => ({
                 regis:"注册",
                 sumbit:"提交",
                 welcome:"欢迎加入图集，创建属于你的图集.",
+                refreshCode:"点击图片刷新验证码"
             }
         }
     }

@@ -3,8 +3,6 @@
  const tokenCookie = useCookie('token');
     const token = tokenCookie.value;
 
-
-
 definePageMeta({
   key: route => route.fullPath
 })

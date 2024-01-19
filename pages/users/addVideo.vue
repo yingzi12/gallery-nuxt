@@ -40,7 +40,7 @@ async function deleteVideo(video: any, index: number) {
       color: 'negative'
     },
   }).onOk(async () => {
-    const response = await axios.get('/api/admin/userVideo/remove?id=' + video.id.toString(), {
+    const response = await axios.get('/api/admin/userVideo/remove?id=' + video.id+'&aid=' + video.aid, {
       method: 'get',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -354,8 +354,10 @@ function getCurrentDateFormatted() {
     >
       <q-item>
         <q-item-section>
-          <q-img
-              :src="video.url"
+<!--          <img :src="config.public.sourceWeb+image.imgUrl">-->
+
+          <q-img v-if="video.status != 3"
+              src="/zhuanma.webp"
               spinner-color="white"
               style="height: 140px; max-width: 150px"
           />

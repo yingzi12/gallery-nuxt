@@ -148,8 +148,9 @@ const togglePasswordVisibility = () => {
               </template>
             </q-input>
 
-            <q-toggle v-model="accept" label="I accept the license and terms"/>
-
+            <!-- 接受条款切换 -->
+            <q-toggle v-model="accept" :label="$t(`introTerms`)"></q-toggle>
+            <a href="/privacyPolicy">{{ $t(`useTerms`) }}</a><a href="/use">{{ $t(`privateTerms`) }}</a>
             <div>
               <q-btn :label=" $t('login.regis')" color="primary" style="width: 100%;" type="submit"/>
             </div>

@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     const headers = event.req.headers;
     // 从请求头中获取 token
     const token = headers.authorization ? headers.authorization.split(' ')[1] : null;
-    const response = await fetch(config.public.baseUrl+`/admin/userVideo/remove/${query.id}`, {
+    const response = await fetch(config.public.baseUrl+`/admin/userVideo/remove?id=${query.id}&aid=${query.aid}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`

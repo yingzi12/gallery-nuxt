@@ -11,6 +11,7 @@ const $q = useQuasar();
 const title = ref(null);
 const girl = ref(null);
 const intro = ref(null);
+const payIntro = ref(null);
 const tags = ref(null);
 const imgUrl = ref("/favicon.png");
 const vipPrice = ref(0.0);
@@ -37,12 +38,15 @@ function onReset() {
   imgUrl.value = "/favicon.png";
   charge.value = 1;
   accept.value = false;
+  payIntro.value = null;
+
 }
 
 async function onSubmit() {
   const response = await axios.post("/api/admin/userAlbum/add", JSON.stringify({
     title: title.value,
     intro: intro.value,
+    payIntro: intro.value,
     girl: girl.value,
     imgUrl: imgUrl.value,
     tags: tags.value,
@@ -102,8 +106,8 @@ async function handleImageUpload(event: Event) {
       if (response.ok) {
         const data = response.data;
         //console.log(data.data)
-        previewImage.value = "https://image.51x.uk" + data.data;
-        imgUrl.value = "https://image.51x.uk" + data.data;
+        previewImage.value = config.public.sourceWeb + data.data;
+        imgUrl.value =  data.data;
       } else {
         throw new Error('Image upload failed');
       }
@@ -169,7 +173,7 @@ function updateCharge(charge: number) {
       </div>
       <q-input
           v-model="title"
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length > 0 || '请输入图集名称']"
           filled
           hint="输入图集名称"
           label="图集名称 *"
@@ -177,7 +181,7 @@ function updateCharge(charge: number) {
       />
       <q-input
           v-model="girl"
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length > 0 || '请输入模特']"
           filled
           hint="Name and surname"
           label="模特 *"
@@ -185,9 +189,15 @@ function updateCharge(charge: number) {
       />
       <q-input
           v-model="intro"
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length > 0 || '请输入简介']"
           filled
           label="简介 *"
+          type="textarea"
+      />
+      <q-input v-if="charge !='1'"
+          v-model="payIntro"
+          filled
+          label="付费说明(购买图集之后才能看到) *"
           type="textarea"
       />
       <!--      </div>-->

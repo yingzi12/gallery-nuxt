@@ -160,7 +160,7 @@ getList(1);
           transition="scale"
       >
         <q-card bordered class="q-ma-sm" flat>
-          <img :src="image.imgUrl">
+          <img :src="config.public.sourceWeb+image.imgUrl">
 
           <q-card-section>
             <q-btn v-if="image.isFree == 2" color="primary" icon="visibility" square @click="updateIsFree(image,1)">

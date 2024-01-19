@@ -226,6 +226,7 @@ const refreshImages = async () => {
   imageList.value = [];
   await debouncedOnLoad(0, () => {});
 };
+console.log("wwimgUrl："+album.imgUrl)
 
 const  stars=ref(3);
 function getImageUrl(imgUrl) {
@@ -258,6 +259,7 @@ function getImageUrl(imgUrl) {
               </div>
               <div style="word-wrap: break-word; white-space: pre-line;">
                 <p>{{ album.intro }}</p>
+                <p>{{ album.payIntro }}</p>
               </div>
               <div> <span v-if="album.charge == 1" class="text-primary" >免费</span>
                 <span v-if="album.charge == 2" class="text-primary" >VIP免费</span>

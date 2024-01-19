@@ -61,6 +61,7 @@ onMounted(() => {
               <q-route-tab to="/usersAlbum" :label="$t('usersAlbum') "  />
               <q-route-tab to="/usersIndex" :label="$t('usersIndex') "  />
               <q-route-tab to="/users" :label="$t('users') "  />
+              <q-route-tab to="/vip" :label="$t('webVip') "  />
               <q-route-tab to="/down" :label="$t('down') "  />
             </q-tabs>
         </q-header>
