@@ -256,7 +256,7 @@ async function uploadPreviewVideoFile() {
         await addVideoRecord(md5, data.data.sourceUrl, isFree);
         //console.log('Upload update complete');
       } else {
-        const identifier = `${selectedPreviewFile.value.name}`;
+        const identifier = `${md5}_${selectedPreviewFile.value.name}`;
         await uploaderVideoPreview.uploadFile(selectedPreviewFile.value, identifier, token, day, aid.value, isFree, md5);
       }
       uploadPreviewProgress.value = 100;

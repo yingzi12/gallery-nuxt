@@ -33,7 +33,7 @@ async function uploadVideoFile() {
   if (selectedFile.value) {
     try {
       // 生成唯一标识符：文件名-时间戳
-      const timestamp = Date.now();
+      // const timestamp = Date.now();
       const identifier = `${selectedFile.value.name}`;
       // const identifier = 'unique-file-id'; // 根据需要生成或获取唯一标识符
       await uploaderVideo.uploadFile(selectedFile.value, identifier);
