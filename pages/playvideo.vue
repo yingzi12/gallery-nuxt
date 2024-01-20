@@ -78,7 +78,23 @@ async function getRandom() {
   }
 }
 
-function player(url,index) {
+function player(url,status,index) {
+  if(status == -1){
+    $q.dialog({
+      title: '信息',
+      message: '视频锁定中，不可播放.',
+      ok: {
+        push: true
+      },
+      cancel: {
+        push: true,
+        color: 'negative'
+      },
+    }).onOk( () => {
+    }).onCancel(() => {
+    });
+    return;
+  }
   console.log("url:"+url)
   videoOptions.value.sources = [
     {
@@ -135,9 +151,18 @@ function getImageUrl(imgUrl) {
                   </q-card-section>
                   <q-separator />
                   <q-card-actions vertical>
-                    <q-btn flat  v-for="(video,index) in videoList"
-                           :key="index" @click="player(video.url,index)" >
-                        视频- {{index}}
+<!--                    <q-btn flat  v-for="(video,index) in videoList"-->
+<!--                           :key="index" @click="player(video.url,index)" >-->
+<!--                        视频- {{index}}-->
+<!--                    </q-btn>-->
+                    <q-btn flat v-for="(video, index) in videoList" :key="index" @click="player(video.url,video.status, index)">
+                      <template v-if="video.status === -1">
+                        <q-icon name="lock" /> <!-- Locked Icon -->
+                        视频- {{ index }} (Locked)
+                      </template>
+                      <template v-else>
+                        视频- {{ index }}
+                      </template>
                     </q-btn>
                   </q-card-actions>
                 </q-card>

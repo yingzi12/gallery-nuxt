@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL:"https://gallery-nuxt.vercel.app",
+    // baseURL:"https://gallery-nuxt.vercel.app",
     // baseURL:"http://127.0.0.1:3000",
     withCredentials: true
 });
