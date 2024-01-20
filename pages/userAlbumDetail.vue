@@ -235,7 +235,6 @@ function getImageUrl(imgUrl) {
   }
   return `/empty.png`; // Default image URL when imgUrl is null, undefined, or empty
 }
-
 </script>
 <template>
   <q-page>
@@ -300,12 +299,16 @@ function getImageUrl(imgUrl) {
                   transition="scale"
               >
                 <q-card bordered class="q-ma-sm" flat>
-                  <img v-if="video.status != -1" :src="getImageUrl(video.imgUrl)">
-                  <img v-if="video.status == -1" :src="getImageUrl('/lock_video.png')">
+                  <img  class="vedioimage" v-if="video.status != -1" :src="getImageUrl(video.imgUrl)">
+                  <img  class="vedioimage"  v-if="video.status == -1" :src="getImageUrl('/lock_video.png')">
 
                   <q-card-section>
                     <q-btn v-if="video.isFree == 2" color="primary" icon="visibility" square>预览</q-btn>
                     <q-btn v-if="video.isFree == 1" color="primary" icon="sunny" square>正式</q-btn>
+                    <q-btn v-if="video.status != -1" color="blue" >
+                      <a :href="'/playvideo?aid=' + album.id">播放</a>
+                    </q-btn>
+
                   </q-card-section>
                 </q-card>
               </q-intersection>
@@ -320,7 +323,7 @@ function getImageUrl(imgUrl) {
             <q-infinite-scroll :disable="disableInfiniteScroll" :offset="250" @load="debouncedOnLoad">
               <div v-for="(image, index) in imageList" :key="index" class="caption">
                 <img v-if="image.status != -1" :src="getImageUrl(image.imgUrl)" class="responsive-image">
-                <img v-if="image.status == -1" :src="getImageUrl('/lock_image.jpg') " class="responsive-image">
+                <img  v-if="image.status == -1" :src="getImageUrl('/lock_image.jpg') " class="responsive-image">
 <!--                <img :src="getImageUrl(image.imgUrl)" class="responsive-image"/>-->
               </div>
 
@@ -462,4 +465,7 @@ function getImageUrl(imgUrl) {
 .headImage
   max-width: 200px
   height: 302px
+.vedioimage
+  width: 300px
+  height: 200px
 </style>
