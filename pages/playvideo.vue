@@ -106,8 +106,13 @@ function getImageUrl(imgUrl) {
           <div class="bg-cyan text-white">
             <q-toolbar inset>
               <q-breadcrumbs active-color="white" style="font-size: 16px">
-                <q-breadcrumbs-el label="首页" icon="home" />
-                <q-breadcrumbs-el label="图集详细" icon="widgets" />
+                <q-breadcrumbs-el  icon="home">
+                  <router-link to="/">首页</router-link>
+                </q-breadcrumbs-el>
+                <q-breadcrumbs-el  icon="widgets">
+                  <router-link :to="'/userAlbumDetail?aid=' + album.id">图集详细</router-link>
+                </q-breadcrumbs-el>
+
                 <q-breadcrumbs-el label="视频播放" />
               </q-breadcrumbs>
             </q-toolbar>
@@ -122,7 +127,10 @@ function getImageUrl(imgUrl) {
               <div class="my-card-container">
                 <q-card class="my-card">
                   <q-card-section>
-                    <div class="text-h6">{{ album.title }}</div>
+                    <div class="text-h6">
+                      <a :href="'/userAlbumDetail?aid=' + album.id" class="album-link">{{ album.title }}</a>
+
+                    </div>
                     <div class="text-subtitle2">{{ album.intro }}</div>
                   </q-card-section>
                   <q-separator />

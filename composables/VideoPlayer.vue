@@ -13,7 +13,7 @@ const props = defineProps({
   options: {
     type: Object,
     default: () => ({
-      controls: true, // 确保启用内建控件
+      controls: true,
       poster: "",
       preload: 'auto',
       src: "",
@@ -28,6 +28,15 @@ onMounted(() => {
   videoPlayer.value = videojs(videoPlayer.value, props.options, () => {
     console.log('Player is ready');
   });
+
+  // 监听 error 事件
+  videoPlayer.value.on('error', () => {
+    console.log('Error loading the video');
+    // 设置播放器为黑屏或显示错误消息
+    videoPlayer.value.poster('/black.jpg'); // 或使用一个黑色的图片
+    videoPlayer.value.textTrackDisplay.hide(); // 隐藏字幕显示
+    // 可以在这里添加更多自定义错误处理逻辑
+  });
 });
 
 onBeforeUnmount(() => {
@@ -36,10 +45,10 @@ onBeforeUnmount(() => {
   }
 });
 </script>
+
 <style>
 .video-js {
   max-width: 800px; /* 最大宽度 */
   margin: 0 auto; /* 居中显示 */
 }
-
 </style>
