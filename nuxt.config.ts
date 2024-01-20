@@ -22,8 +22,8 @@ export default defineNuxtConfig({
     },
     // Public keys that are exposed to the client
     public: {
-      // baseUrl:  "https://test.aiavr.uk",
-      baseUrl:  "http://127.0.0.1:8098",
+      baseUrl:  "https://test.aiavr.uk",
+      // baseUrl:  "http://127.0.0.1:8098",
       sourceWeb: 'https://image.51x.uk/xinshijie/test'
     }
   },
