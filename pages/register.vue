@@ -128,7 +128,7 @@ const togglePasswordVisibility = () => {
             <q-input
                 v-model="email"
                 :label="$t('login.email')+' *'"
-                :rules="[ val => val && val.length > 5 || 'Please enter your email']"
+                :rules="[ val => val && val.length > 5 && val.length < 30 || 'Please enter your email,5-30']"
                 filled
                 type="email"
             />
