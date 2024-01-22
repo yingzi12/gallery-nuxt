@@ -17,7 +17,7 @@ const aid = ref(route.query.aid);
  const status = ref(Number(route.query.status));
  const canUpload = computed(() => status.value === 2); // 计算是否可以上传
 
-const updateUrl = ref(config.public.baseUrl + "/admin/userImage/upload");
+const updateUrl = ref(config.public.baseUrl + "/admin/userImage/uploadBatch");
 
 const imageList = ref([]);
 const total = ref(0);
@@ -140,9 +140,10 @@ getList(1);
           :url="updateUrl"
           :with-credentials="false"
           accept=".jpg, image/*"
-          field-name="file"
+          field-name="files"
           label="上传图集预览图片（预览图片公开观看）"
           multiple
+          batch
           style="max-width: 300px"
           @finish="getList(1)"
       />
@@ -156,9 +157,10 @@ getList(1);
           :url="updateUrl"
           :with-credentials="false"
           accept=".jpg, image/*"
-          field-name="file"
-          label="上传图集正式图片"
+          field-name="files"
+          label="上传图集私有图片"
           multiple
+          batch
           style="max-width: 300px"
           @finish="getList(1)"
       />
