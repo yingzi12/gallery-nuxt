@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     public: {
       baseUrl:  "https://admin.aiavr.uk",
       // baseUrl:  "http://127.0.0.1:8098",
-      sourceWeb: 'https://image.51x.uk/xinshijie/test'
+      sourceWeb: 'https://image.51x.uk/xinshijie'
     }
   },
   quasar: {
