@@ -14,7 +14,11 @@ const config = useRuntimeConfig();
 const $q = useQuasar();
 const route = useRoute();
 const aid = ref(route.query.aid);
+ const status = ref(Number(route.query.status));
+ const canUpload = computed(() => status.value === 2); // 计算是否可以上传
+
 const updateUrl = ref(config.public.baseUrl + "/admin/userImage/upload");
+
 const imageList = ref([]);
 const total = ref(0);
 const maxPage = ref(0);
@@ -32,6 +36,7 @@ const queryData = reactive({
 const {queryParams} = toRefs(queryData);
 
 async function getList(page: number) {
+
   queryParams.value.aid = aid.value;
   queryParams.value.pageNum = page;
   try {
@@ -103,7 +108,13 @@ async function updateIsFree(image: any, isFree: number) {
   })
   ;
 }
-
+ function onUploadFailed(error) {
+   // 上传失败处理
+   $q.notify({
+     color: 'negative',
+     message: '上传失败: ' + error.message
+   });
+ }
 // onMounted(() => {
 //   getList(1);
 // });
@@ -121,7 +132,7 @@ getList(1);
     </q-breadcrumbs-el>
     <q-breadcrumbs-el label="图片列表"/>
   </q-breadcrumbs>
-  <div class="q-pa-md">
+  <div class="q-pa-md" v-if="canUpload">
     <div class="q-gutter-sm row items-start">
       <q-uploader
           :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `1`}]"
@@ -137,7 +148,7 @@ getList(1);
       />
     </div>
   </div>
-  <div class="q-pa-md">
+  <div class="q-pa-md"  v-if="canUpload">
     <div class="q-gutter-sm row items-start">
       <q-uploader
           :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `2`}]"
@@ -177,15 +188,15 @@ getList(1);
       </q-intersection>
 
     </div>
-    <div class="q-pa-lg flex flex-center">
-      <q-pagination
-          v-model="current"
-          :max="maxPage"
-          direction-links
-          @update:modelValue="getList(current)"
+  </div>
+  <div class="q-pa-lg flex flex-center">
+    <q-pagination
+        v-model="current"
+        :max="maxPage"
+        direction-links
+        @update:modelValue="getList(current)"
 
-      />
-    </div>
+    />
   </div>
 </template>
 

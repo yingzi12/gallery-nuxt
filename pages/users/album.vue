@@ -1,17 +1,16 @@
 <script lang="ts" setup>
- const tokenCookie = useCookie('token');
- const config = useRuntimeConfig();
+const tokenCookie = useCookie('token');
+const config = useRuntimeConfig();
 
- const token = tokenCookie.value;
+const token = tokenCookie.value;
 import {useQuasar} from "quasar";
 
 const router = useRouter();
-
 const albumList = ref([]);
- const total = ref(0);
- const maxPage = ref(0);
+const total = ref(0);
+const maxPage = ref(0);
 
- const current=ref(1)
+const current=ref(1)
 const $q = useQuasar();
 
 const queryData = reactive({
@@ -141,17 +140,12 @@ function getImageUrl(imgUrl:string) {
             <q-item-label caption>
               {{ album.intro }}
             </q-item-label>
-            <!--          <q-item-label caption>-->
-            <!--            标签。标签标签标签标签标签标签标签标签标签标签标签标签-->
-            <!--          </q-item-label>-->
             <q-item-label class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
               <span class="cursor-pointer"><a
-                  :href="'/users/addVideo?aid='+album.id+'&title='+album.title">视频： {{ album.numberVideo }}</a></span>
+                  :href="'/users/addVideo?aid='+album.id+'&title='+album.title+'&status='+album.status">视频： {{ album.numberVideo }}</a></span>
             </q-item-label>
             <q-item-label class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
-              <span class="cursor-pointer"><a :href="'/users/addImage?aid='+album.id+'&title='+album.title">照片： {{
-                  album.numberPhotos
-                }}</a></span>
+              <span class="cursor-pointer"><a :href="'/users/addImage?aid='+album.id+'&status='+album.status+'&title='+album.title">照片： {{album.numberPhotos}}</a></span>
             </q-item-label>
           </q-item-section>
           <q-item-section side>
@@ -169,9 +163,7 @@ function getImageUrl(imgUrl:string) {
             <q-item-label caption>收藏： {{ album.countCollection }}</q-item-label>
             <q-item-label caption>购买： {{ album.countBuy }}</q-item-label>
             <q-item-label caption>查看： {{ album.countSee }}</q-item-label>
-            <q-item-label caption>模特： {{
-                album.girl
-              }}
+            <q-item-label caption>模特： {{ album.girl }}
             </q-item-label>
             <q-item-label caption>{{ album.createTime }}</q-item-label>
           </q-item-section>

@@ -85,37 +85,6 @@ async function onSubmit() {
   // }
 }
 
-// async function handleImageUpload(event: Event) {
-//   const file = (event.target as HTMLInputElement).files?.[0];
-//   if (file && file.size <= 2 * 1024 * 1024) { // 2MB限制
-//     selectedImage.value = file;
-//
-//     const formData = new FormData();
-//     formData.append('file', file);
-//
-//     try {
-//       const response = await fetch(config.public.baseUrl + '/admin/userAlbum/upload', {
-//         method: 'POST',
-//         body: formData,
-//         credentials: 'include', // 确保携带 cookie
-//         headers: new Headers({
-//           'Authorization': `Bearer ${token}`
-//         })
-//       });
-//       if (response.ok) {
-//         const data = await response.json(); // 确保使用 await 等待 json 解析完成
-//         previewImage.value = config.public.sourceWeb + data.data;
-//         imgUrl.value = data.data;
-//       } else {
-//         throw new Error('Image upload failed');
-//       }
-//     } catch (error) {
-//       notify('Error uploading image', 'red-5');
-//     }
-//   } else {
-//     alert('图片大小不能超过2MB');
-//   }
-// }
 async function handleImageUpload(event: Event) {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (file && file.size <= 2 * 1024 * 1024) { // 2MB限制
@@ -129,12 +98,20 @@ async function handleImageUpload(event: Event) {
         body: formData,
         credentials: 'include', // 确保携带 cookie
       });
-      if (response.ok) {
-        const data = await response.json(); // 确保使用 await 等待 json 解析完成
+      const data = await response.json(); // 确保使用 await 等待 json 解析完成
+      if (data.code === 200) {
         previewImage.value = config.public.sourceWeb + data.data;
         imgUrl.value = data.data;
       } else {
-        throw new Error('Image upload failed');
+        $q.dialog({
+          title: '错误',
+          message: data.msg,
+          ok: {
+            push: true
+          },
+        }).onOk(async () => {
+        });
+        // throw new Error('Image upload failed');
       }
     } catch (error) {
       notify('Error uploading image', 'red-5');

@@ -118,16 +118,21 @@ async function handleImageUpload(event: Event) {
         body: formData,
         credentials: 'include', // 确保携带 cookie
       });
+      const data = await response.json(); // 确保使用 await 等待 json 解析完成
 
-      if (response.ok) {
-        // const data = response.data;
-        // //console.log(data.data)
-        // previewImage.value = config.public.sourceWeb + data.data;
-        // imgUrl.value =  data.data;
-        const data = await response.json(); // 确保使用 await 等待 json 解析完成
+      if (data.code === 200) {
+
         previewImage.value = config.public.sourceWeb + data.data;
         imgUrl.value = data.data;
       } else {
+        $q.dialog({
+          title: '错误',
+          message: data.msg,
+          ok: {
+            push: true
+          },
+        }).onOk(async () => {
+        });
         throw new Error('Image upload failed');
       }
     } catch (error) {

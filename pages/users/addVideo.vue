@@ -14,7 +14,8 @@ const route = useRoute();
 const aid = ref(route.query.aid);
 const videoList = ref([]);
 const total = ref(0);
-
+const status = ref(Number(route.query.status));
+const canUpload = computed(() => status.value === 2); // 计算是否可以上传
 async function getList(page: number) {
   const response = await axios.get(`/api/admin/userVideo/list?aid=${aid.value}&pageNum=${1}`, {
     headers: {
@@ -300,53 +301,55 @@ function getCurrentDateFormatted() {
     </q-breadcrumbs-el>
     <q-breadcrumbs-el label="视频列表"/>
   </q-breadcrumbs>
-  <div class="q-pa-md">
+  <div class="q-pa-md" v-if="canUpload">
     <div>
-      <p class="text-body2">预览视频最大100M,最多3个文件</p>
-      <p class="text-body2">正式视频最大1024M,最多10个文件</p>
+      <p class="text-body2">预览视频最大100M</p>
+      <p class="text-body2">正式视频最大1024M</p>
+      <p class="text-body2">最多3个视频</p>
       <p class="text-body2">视频文件只支持.mp4</p>
       <p class="text-body2">推荐电脑端免费转码工具:<a
           href="http://www.pcfreetime.com/formatfactory/cn/index.html">格式工厂</a></p>
-
     </div>
   </div>
   <div>
+    <div class="q-pa-md" v-if="canUpload">
 
-    <q-card class="my-card">
-      <q-card-section>
-        <div class="text-subtitle1">上传预览视频（公开可看）</div>
-      </q-card-section>
-      <q-separator/>
-      <q-card-actions vertical>
-        <q-btn flat><input accept=".mp4" type="file" @change="handlePreviewVideoFileChange"/></q-btn>
-        <q-btn flat>
-          <button @click="uploadPreviewVideoFile">Upload Preview</button>
-        </q-btn>
-      </q-card-actions>
-      <q-separator/>
-      <q-card-actions vertical>
-        <div v-if="uploadPreviewProgress">
-          <p>Uploading Preview: {{ uploadPreviewProgress }}%</p>
-        </div>
-      </q-card-actions>
+      <q-card class="my-card">
+        <q-card-section>
+          <div class="text-subtitle1">上传预览视频（公开可看）</div>
+        </q-card-section>
+        <q-separator/>
+        <q-card-actions vertical>
+          <q-btn flat><input accept=".mp4" type="file" @change="handlePreviewVideoFileChange"/></q-btn>
+          <q-btn flat>
+            <button @click="uploadPreviewVideoFile">Upload Preview</button>
+          </q-btn>
+        </q-card-actions>
+        <q-separator/>
+        <q-card-actions vertical>
+          <div v-if="uploadPreviewProgress">
+            <p>Uploading Preview: {{ uploadPreviewProgress }}%</p>
+          </div>
+        </q-card-actions>
 
-      <q-card-section>
-        <div class="text-subtitle1">上传正式视频</div>
-      </q-card-section>
-      <q-separator/>
-      <q-card-actions vertical>
-        <q-btn flat><input accept=".mp4" type="file" @change="handleVideoFileChange"/></q-btn>
-        <q-btn flat>
-          <button @click="uploadVideoFile">Upload</button>
-        </q-btn>
-      </q-card-actions>
-      <q-separator/>
-      <q-card-actions vertical>
-        <div v-if="uploadVideoProgress">
-          <p>Uploading: {{ uploadVideoProgress }}%</p>
-        </div>
-      </q-card-actions>
-    </q-card>
+        <q-card-section>
+          <div class="text-subtitle1">上传正式视频</div>
+        </q-card-section>
+        <q-separator/>
+        <q-card-actions vertical>
+          <q-btn flat><input accept=".mp4" type="file" @change="handleVideoFileChange"/></q-btn>
+          <q-btn flat>
+            <button @click="uploadVideoFile">Upload</button>
+          </q-btn>
+        </q-card-actions>
+        <q-separator/>
+        <q-card-actions vertical>
+          <div v-if="uploadVideoProgress">
+            <p>Uploading: {{ uploadVideoProgress }}%</p>
+          </div>
+        </q-card-actions>
+      </q-card>
+    </div>
   </div>
   <!--  <q-th>视频列表（{{total}}）</q-th>-->
   <q-list bordered class="rounded-borders" style="max-width: 400px">
@@ -356,12 +359,12 @@ function getCurrentDateFormatted() {
     >
       <q-item>
         <q-item-section>
-<!--          <img :src="config.public.sourceWeb+image.imgUrl">-->
+          <!--          <img :src="config.public.sourceWeb+image.imgUrl">-->
 
           <q-img v-if="video.status != 3"
-              src="/zhuanma.webp"
-              spinner-color="white"
-              style="height: 140px; max-width: 150px"
+                 src="/zhuanma.webp"
+                 spinner-color="white"
+                 style="height: 140px; max-width: 150px"
           />
         </q-item-section>
 
