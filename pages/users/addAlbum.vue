@@ -46,7 +46,7 @@ async function onSubmit() {
   const response = await axios.post("/api/admin/userAlbum/add", JSON.stringify({
     title: title.value,
     intro: intro.value,
-    payIntro: intro.value,
+    payIntro: payIntro.value,
     girl: girl.value,
     imgUrl: imgUrl.value,
     tags: tags.value,

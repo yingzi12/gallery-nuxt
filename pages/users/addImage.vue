@@ -144,6 +144,7 @@ getList(1);
           label="上传图集预览图片（预览图片公开观看）"
           multiple
           batch
+          max-files="100"
           style="max-width: 300px"
           @finish="getList(1)"
       />

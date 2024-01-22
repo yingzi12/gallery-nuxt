@@ -12,7 +12,7 @@ const config = useRuntimeConfig();
 const $q = useQuasar();
 const route = useRoute();
 const aid = ref(route.query.aid);
-const updateUrl = ref(config.public.baseUrl + "/image/upload");
+const updateUrl = ref(config.public.baseUrl + "/image/uploadBatch");
 const imageList = ref([]);
 const total = ref(0);
 const maxPage = ref(0);
@@ -123,6 +123,8 @@ getList(1);
           field-name="file"
           label="上传图集预览图片（预览图片公开观看）"
           multiple
+          batch
+          max-files="100"
           style="max-width: 300px"
           @finish="getList(1)"
       />
