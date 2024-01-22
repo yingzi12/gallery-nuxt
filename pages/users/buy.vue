@@ -14,6 +14,7 @@ const sellList = ref([]);
 const queryData = reactive({
   queryParams: {
     pageNum: 1,
+    pageSize: 20,
   }
 });
 const {queryParams} = toRefs(queryData);

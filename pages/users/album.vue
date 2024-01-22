@@ -18,6 +18,7 @@ const queryData = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
+    pageSize: 20,
     title: '',
   },
   rules: {}

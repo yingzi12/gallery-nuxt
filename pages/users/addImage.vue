@@ -24,6 +24,7 @@ const current=ref(1)
 const queryData = reactive({
   queryParams: {
     pageNum: 1,
+    pageSize:20,
     title: '',
     aid: aid.value,
   }

@@ -18,6 +18,7 @@ const queryData = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
+    pageSize: 20,
     title: '',
   },
   rules: {}
@@ -29,7 +30,7 @@ const {queryParams, form, rules} = toRefs(queryData);
 async function getList(page: number) {
   try {
     // 使用 get 方法发送 GET 请求
-    const response = await axios.get('/api/addAlbum/list?pageNum='+page);
+    const response = await axios.get('/api/addAlbum/list?pageSize=20&pageNum='+page);
     // 更新数据
     total.value = response.data.total;
     albumList.value = response.data.data;
