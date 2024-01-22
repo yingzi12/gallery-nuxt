@@ -43,17 +43,16 @@ async function onSubmit() {
   }
 
   try {
-    const response = await fetch("/api/users/regis", {
-      method: "post",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name.value,
-        email: email.value,
-        password: password.value
-      }),
-    });
+    const response = await axios.post("/api/users/regis",
+        JSON.stringify({
+          name: name.value,
+          email: email.value,
+          password: password.value
+        }), {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
     const data = response.data;
 
     if (data && data.code === 200) {

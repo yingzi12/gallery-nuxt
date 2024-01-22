@@ -33,7 +33,7 @@ async function getList(page: number) {
     // 更新数据
     total.value = response.data.total;
     albumList.value = response.data.data;
-    if (total.value === 0) {
+    if (total.value > 0) {
       // total.value = albumList.value.length;
       total.value = response.data.total;
       maxPage.value=  total.value/20+1;

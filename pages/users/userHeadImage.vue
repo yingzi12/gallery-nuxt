@@ -45,7 +45,7 @@ const uploadImage = async () => {
         })
       });
 
-      const data = response.json();
+      const data = await  response.json();
       // //console.log(data)
       // //console.log(data.data)
       // //console.log(data.code)

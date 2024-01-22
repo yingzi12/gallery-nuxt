@@ -104,10 +104,13 @@ async function handleImageUpload(event: Event) {
       });
 
       if (response.ok) {
-        const data = response.data;
-        //console.log(data.data)
+        // const data = response.json();
+        // //console.log(data.data)
+        // previewImage.value = config.public.sourceWeb + data.data;
+        // imgUrl.value =  data.data;
+        const data = await response.json(); // 确保使用 await 等待 json 解析完成
         previewImage.value = config.public.sourceWeb + data.data;
-        imgUrl.value =  data.data;
+        imgUrl.value = data.data;
       } else {
         throw new Error('Image upload failed');
       }

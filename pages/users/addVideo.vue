@@ -158,7 +158,7 @@ async function uploadVideoFile() {
           'Authorization': `Bearer ${token}`
         },
       });
-      const data = response.data;
+      const data =await response.json();
       // const data= checkFileExistence(md5);
       //console.log(data);
       const isFree = 2;
@@ -248,7 +248,7 @@ async function uploadPreviewVideoFile() {
           'Authorization': `Bearer ${token}`
         },
       });
-      const data = response.data;
+      const data =await response.json();
       //console.log("checkFileExistence");
       //console.log(data);
       const isFree = 1;
