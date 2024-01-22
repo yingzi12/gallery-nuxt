@@ -29,7 +29,7 @@ const {queryParams, form, rules} = toRefs(queryData);
 async function getList(page: number) {
   try {
     // 使用 get 方法发送 GET 请求
-    const response = await axios.get('/api/addAlbum/list', tansParams(queryParams.value));
+    const response = await axios.get('/api/addAlbum/list?pageNum='+page);
     // 更新数据
     total.value = response.data.total;
     albumList.value = response.data.data;
@@ -51,7 +51,7 @@ onMounted(() => {
 
 function editAlbum(id: number) {
 
-  router.push("/users/editAlbum?id=" + id.toString());
+  router.push("/editAlbum?id=" + id.toString());
 }
 
 function updateStatus(album: any, statusChoise: number) {
@@ -128,7 +128,7 @@ function getImageUrl(imgUrl:string) {
         <q-item>
           <q-item-section>
             <q-img
-                :src="getImageUrl(album.imgUrl)"
+                :src="getImageUrl(album.sourceUrl)"
                 spinner-color="white"
                 style="height: 140px; max-width: 150px"
             />

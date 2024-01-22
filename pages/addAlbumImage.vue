@@ -107,7 +107,9 @@ getList(1);
 
 <template>
   <q-breadcrumbs gutter="none">
-    <q-breadcrumbs-el label="这是我的图集"/>
+    <q-breadcrumbs-el >
+      <router-link to="/addAlbumList">系统图集列表</router-link>
+    </q-breadcrumbs-el>
     <q-breadcrumbs-el label="图片列表"/>
   </q-breadcrumbs>
   <div class="q-pa-md">
@@ -150,7 +152,7 @@ getList(1);
           transition="scale"
       >
         <q-card bordered class="q-ma-sm" flat>
-          <img :src="config.public.sourceWeb+image.imgUrl">
+          <img :src="config.public.sourceWeb+image.sourceUrl">
 
           <q-card-section>
             <q-btn v-if="image.isFree == 2" color="primary" icon="visibility" square @click="updateIsFree(image,1)">
