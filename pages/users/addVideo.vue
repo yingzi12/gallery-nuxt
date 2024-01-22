@@ -295,7 +295,9 @@ function getCurrentDateFormatted() {
 
 <template>
   <q-breadcrumbs gutter="none">
-    <q-breadcrumbs-el label="这是我的图集"/>
+    <q-breadcrumbs-el >
+      <router-link to="/users/album">图集列表</router-link>
+    </q-breadcrumbs-el>
     <q-breadcrumbs-el label="视频列表"/>
   </q-breadcrumbs>
   <div class="q-pa-md">

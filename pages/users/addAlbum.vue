@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useQuasar} from 'quasar';
- const tokenCookie = useCookie('token');
-    const token = tokenCookie.value;
+const tokenCookie = useCookie('token');
+const token = tokenCookie.value;
 
 const router = useRouter(); // 使用 Vue Router 的 useRouter 函数
 
@@ -85,6 +85,37 @@ async function onSubmit() {
   // }
 }
 
+// async function handleImageUpload(event: Event) {
+//   const file = (event.target as HTMLInputElement).files?.[0];
+//   if (file && file.size <= 2 * 1024 * 1024) { // 2MB限制
+//     selectedImage.value = file;
+//
+//     const formData = new FormData();
+//     formData.append('file', file);
+//
+//     try {
+//       const response = await fetch(config.public.baseUrl + '/admin/userAlbum/upload', {
+//         method: 'POST',
+//         body: formData,
+//         credentials: 'include', // 确保携带 cookie
+//         headers: new Headers({
+//           'Authorization': `Bearer ${token}`
+//         })
+//       });
+//       if (response.ok) {
+//         const data = await response.json(); // 确保使用 await 等待 json 解析完成
+//         previewImage.value = config.public.sourceWeb + data.data;
+//         imgUrl.value = data.data;
+//       } else {
+//         throw new Error('Image upload failed');
+//       }
+//     } catch (error) {
+//       notify('Error uploading image', 'red-5');
+//     }
+//   } else {
+//     alert('图片大小不能超过2MB');
+//   }
+// }
 async function handleImageUpload(event: Event) {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (file && file.size <= 2 * 1024 * 1024) { // 2MB限制
@@ -92,22 +123,13 @@ async function handleImageUpload(event: Event) {
 
     const formData = new FormData();
     formData.append('file', file);
-
     try {
-      const response = await fetch(config.public.baseUrl + '/admin/userAlbum/upload', {
+      const response = await fetch(config.public.baseUrl + '/userAlbum/upload', {
         method: 'POST',
         body: formData,
         credentials: 'include', // 确保携带 cookie
-        headers: new Headers({
-          'Authorization': `Bearer ${token}`
-        })
       });
-
       if (response.ok) {
-        // const data = response.json();
-        // //console.log(data.data)
-        // previewImage.value = config.public.sourceWeb + data.data;
-        // imgUrl.value =  data.data;
         const data = await response.json(); // 确保使用 await 等待 json 解析完成
         previewImage.value = config.public.sourceWeb + data.data;
         imgUrl.value = data.data;

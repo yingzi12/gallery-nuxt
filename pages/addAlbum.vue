@@ -74,32 +74,22 @@ async function onSubmit() {
 }
 
 async function handleImageUpload(event: Event) {
-  console.log("------------handleImageUpload---------------")
-
   const file = (event.target as HTMLInputElement).files?.[0];
-  console.log("------------handleImageUpload----1-----------")
   if (file && file.size <= 2 * 1024 * 1024) { // 2MB限制
-    console.log("------------handleImageUpload----2-----------")
-
     selectedImage.value = file;
 
     const formData = new FormData();
     formData.append('file', file);
-    console.log("------------handleImageUpload----3-----------")
     try {
       const response = await fetch(config.public.baseUrl + '/addAlbum/upload', {
         method: 'POST',
         body: formData,
         credentials: 'include', // 确保携带 cookie
       });
-     console.log("------------handleImageUpload-------jj--------")
-      console.log(response.ok)
       if (response.ok) {
         const data = await response.json(); // 确保使用 await 等待 json 解析完成
-        console.log(data.data);
         previewImage.value = config.public.sourceWeb + data.data;
         imgUrl.value = data.data;
-        console.log(imgUrl.value);
       } else {
         throw new Error('Image upload failed');
       }

@@ -113,13 +113,10 @@ async function handleImageUpload(event: Event) {
     formData.append('file', file);
 
     try {
-      const response = await fetch(config.public.baseUrl + '/admin/userAlbum/upload', {
+      const response = await fetch(config.public.baseUrl + '/userAlbum/upload', {
         method: 'POST',
         body: formData,
         credentials: 'include', // 确保携带 cookie
-        headers: new Headers({
-          'Authorization': `Bearer ${token}`
-        })
       });
 
       if (response.ok) {
