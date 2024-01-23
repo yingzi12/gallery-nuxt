@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
     // baseURL:"https://gallery-nuxt.vercel.app",
-    // baseURL:"https://www.51x.uk",
-    baseURL:"https://idyllic-kheer-a1b6ce.netlify.app/",
+    baseURL:"https://51x.uk",
+    // baseURL:"https://idyllic-kheer-a1b6ce.netlify.app/",
     withCredentials: true
 });
 
