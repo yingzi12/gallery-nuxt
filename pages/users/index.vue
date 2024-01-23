@@ -2,6 +2,7 @@
 definePageMeta({
   key: route => route.fullPath
 })
+const config = useRuntimeConfig();
 const tokenCookie = useCookie('token');
 const token = tokenCookie.value;
 const idCookie = useCookie('id');
@@ -49,7 +50,12 @@ async function getDetail() {
 }
 
 getDetail();
-
+function getImageUrl(url) {
+  if (url != null) {
+    return `${config.public.sourceWeb}${url}`;
+  }
+  return "/favicon.png";
+}
 </script>
 
 <template>
@@ -67,7 +73,7 @@ getDetail();
       <q-item>
         <q-item-section>
           <q-avatar v-if="imgUrl != null" font-size="52px" size="100px">
-            <img :src="imgUrl">
+            <img :src="getImageUrl(imgUrl)">
           </q-avatar>
         </q-item-section>
 

@@ -1,5 +1,3 @@
-import {tansParams} from "~/server/utils/urlUtils";
-
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
      // 获取请求头

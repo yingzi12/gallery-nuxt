@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-
 import Big from "big.js/big.mjs";
-
 const $q = useQuasar()
 
 const router = useRouter(); // 使用 Vue Router 的 useRouter 函数

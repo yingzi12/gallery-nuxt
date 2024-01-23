@@ -3,7 +3,8 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
     // baseURL:"https://gallery-nuxt.vercel.app",
-    baseURL:"https://www.51x.uk",
+    // baseURL:"https://www.51x.uk",
+    baseURL:"https://idyllic-kheer-a1b6ce.netlify.app/",
     withCredentials: true
 });
 
@@ -12,14 +13,7 @@ axiosInstance.interceptors.request.use(config => {
     
     const tokenCookie = useCookie('token');
     const token = tokenCookie.value;
-    //console.log(`-------------------请求---${config.url}----token:-${token}---userStore:${tokenCookie}-`)
-    // //console.log(!token)
     if (config.url.startsWith('/api/admin')) {
-        // router.push("/login")
-        // 清空 cookie
-        // 注：这里的具体实现取决于您如何管理 cookie
-        // 例如：document.cookie = 'token=; Max-Age=0';
-
         if(!token){
             // 重定向到登录页面
             // 注：这里的重定向实现取决于您的路由设置

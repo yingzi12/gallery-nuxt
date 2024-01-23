@@ -4,10 +4,9 @@ const drawer = ref(false);
 const link = ref('detail')
 const users = ref(null)
 const previewImage = ref("/favicon.png")
+const config = useRuntimeConfig();
 
 const tokenCookie = useCookie('token');
-//console.log("tokenCookie")
-//console.log(tokenCookie)
 const token = tokenCookie.value;
 const idCookie = useCookie('id');
 const id = idCookie.value;
@@ -17,7 +16,7 @@ const userInfo = userCookie.value;
 const name = ref(null);
 const nickname = ref(null);
 const email = ref(null);
-const imgUrl = ref("/favicon.png");
+const imgUrl = ref(null);
 const isEmail = ref(null);
 const intro = ref(null);
 const countSee = ref(0);
@@ -41,7 +40,7 @@ async function getDetail() {
     name.value = data.data.name;
     nickname.value = data.data.nickname;
     email.value = data.data.email;
-    imgUrl.value = data.data.imgUrl ==null?"/favicon.png":data.data.imgUrl ;
+    imgUrl.value = data.data.imgUrl;
     intro.value = data.data.intro;
     isEmail.value = data.data.isEmail;
     countSee.value = data.data.countSee;
@@ -72,12 +71,14 @@ const logout = async () => {
   router.push('/login'); // 假设登录页面的路由为 '/login'
 };
 
-onMounted(() => {
-  // 当组件挂载时检查用户的登录状态
-  previewImage.value = (userInfo == null || userInfo.imgUrl == null) ? "/favicon.png" : userInfo.imgUrl;
-  users.value = userInfo;
-  // userStore.refreshCookieExpiration();
-});
+function getImageUrl(url) {
+  console.log(url)
+  if (url != null) {
+    console.log(`${config.public.sourceWeb}${url}`)
+    return `${config.public.sourceWeb}${url}`;
+  }
+  return "/favicon.png";
+}
 </script>
 
 <template>
@@ -295,8 +296,8 @@ onMounted(() => {
 
         <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
           <div class="absolute-bottom bg-transparent">
-            <q-avatar v-if="imgUrl" class="q-mb-sm" size="56px">
-              <img :src="imgUrl">
+            <q-avatar  class="q-mb-sm" size="56px">
+              <img :src="getImageUrl(imgUrl)">
             </q-avatar>
             <div class="text-weight-bold">{{ nickname != null ? nickname : '待登录' }}</div>
             <div v-if="email">
