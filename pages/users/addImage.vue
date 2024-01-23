@@ -1,6 +1,6 @@
 <script lang="ts" setup>
- const tokenCookie = useCookie('token');
-    const token = tokenCookie.value;
+const tokenCookie = useCookie('token');
+const token = tokenCookie.value;
 import {useRoute} from "vue-router";
 import {useQuasar} from "quasar";
 
@@ -14,14 +14,15 @@ const config = useRuntimeConfig();
 const $q = useQuasar();
 const route = useRoute();
 const aid = ref(route.query.aid);
- const status = ref(Number(route.query.status));
- const canUpload = computed(() => status.value === 2); // 计算是否可以上传
+const status = ref(Number(route.query.status));
+const canUpload = computed(() => status.value === 2); // 计算是否可以上传
 
 const updateUrl = ref(config.public.baseUrl + "/admin/userImage/uploadBatch");
 
 const imageList = ref([]);
 const total = ref(0);
 const maxPage = ref(0);
+const fourth= ref(true);
 
 const current=ref(1)
 
@@ -108,13 +109,13 @@ async function updateIsFree(image: any, isFree: number) {
   })
   ;
 }
- function onUploadFailed(error) {
-   // 上传失败处理
-   $q.notify({
-     color: 'negative',
-     message: '上传失败: ' + error.message
-   });
- }
+function onUploadFailed(error) {
+  // 上传失败处理
+  $q.notify({
+    color: 'negative',
+    message: '上传失败: ' + error.message
+  });
+}
 // onMounted(() => {
 //   getList(1);
 // });
@@ -132,6 +133,15 @@ getList(1);
     </q-breadcrumbs-el>
     <q-breadcrumbs-el label="图片列表"/>
   </q-breadcrumbs>
+  <div>
+    <q-toggle
+        v-model="fourth"
+        checked-icon="check"
+        color="red"
+        label="Different icon for each state"
+        unchecked-icon="clear"
+    />
+  </div>
   <div class="q-pa-md" v-if="canUpload">
     <div class="q-gutter-sm row items-start">
       <q-uploader

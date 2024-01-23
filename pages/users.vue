@@ -72,9 +72,7 @@ const logout = async () => {
 };
 
 function getImageUrl(url) {
-  console.log(url)
   if (url != null) {
-    console.log(`${config.public.sourceWeb}${url}`)
     return `${config.public.sourceWeb}${url}`;
   }
   return "/favicon.png";

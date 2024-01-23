@@ -11,7 +11,7 @@ const current = ref(1)
 const slide = ref('first')
 const nickname = ref(null)
 const intro = ref('')
-const imgUrl = ref("/favicon.png");
+const imgUrl = ref(null);
 const countSee = ref(0);
 const countLike = ref(0);
 const countAttention = ref(0);
@@ -74,7 +74,7 @@ async function getDetail() {
     //console.log(nickname.value)
     isAttention.value=userData.isAttention
     intro.value = userData.intro;
-    imgUrl.value = userData.imgUrl ==null ? "/favicon.png": userData.imgUrl ;
+    imgUrl.value = userData.imgUrl ;
     countSee.value = userData.countSee;
     countLike.value = userData.countLike;
     countAttention.value = userData.countAttention;
@@ -109,11 +109,11 @@ async function closeAttention() {
     isAttention.value=2;
   }
 }
-function getImageUrl(imgUrl) {
-  if (imgUrl != null && imgUrl !== undefined && imgUrl !== '') {
-    return `${config.public.sourceWeb}${imgUrl}`;
+function getImageUrl(url) {
+  if (url != null) {
+    return `${config.public.sourceWeb}${url}`;
   }
-  return `/empty.png`; // Default image URL when imgUrl is null, undefined, or empty
+  return "/favicon.png";
 }
 </script>
 

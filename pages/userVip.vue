@@ -4,13 +4,14 @@ import PayaplCard from "~/pages/payaplCard.vue";
 const tokenCookie = useCookie('token');
 const token = tokenCookie.value;
 const route = useRoute();
+const config = useRuntimeConfig();
 
 const userId = ref(route.query.userId);
 const current = ref(1)
 const slide = ref('first')
 const nickname = ref('')
 const intro = ref('')
-const imgUrl = ref("/favicon.png");
+const imgUrl = ref(null);
 const countSee = ref(0);
 const countLike = ref(0);
 const countAttention = ref(0);
@@ -78,13 +79,10 @@ async function getDetail() {
   });
   const data = response.data;
   if (data.code == 200) {
-    //console.log("systemUser/info")
-    //console.log(data.data)
     const userData=data.data;
-    //console.log(userData.nickname)
     nickname.value = userData.nickname;
     intro.value = userData.intro;
-    imgUrl.value = userData.imgUrl ==null ? "/favicon.png": userData.imgUrl ;
+    imgUrl.value = userData.imgUrl ;
     countSee.value = userData.countSee;
     countLike.value = userData.countLike;
     countAttention.value = userData.countAttention;
@@ -93,20 +91,26 @@ async function getDetail() {
 
 getDetail();
 
-
+function getImageUrl(url) {
+  console.log(url)
+  if (url != null) {
+    return `${config.public.sourceWeb}${url}`;
+  }
+  return "/favicon.png";
+}
 
 </script>
 
 <template>
   <div class="caption">
     <q-card class="my-card">
-      <q-avatar font-size="52px" size="100px">
-        <img src="https://cdn.quasar.dev/img/mountains.jpg">
-
-      </q-avatar>
-      <q-card-section>
-        <div class="text-h6"><a href="/userDetail">{{ nickname }}</a></div>
-<!--        <div class="text-subtitle2">by John Doe</div>-->
+      <div class="row justify-center">
+        <q-avatar font-size="52px" size="100px" class="q-mb-md">
+          <img :src="getImageUrl(imgUrl)">
+        </q-avatar>
+      </div>
+      <q-card-section class="text-center">
+        <div class="text-h6"><a :href='"/userDetail?userId="+userId'>{{ nickname }}</a></div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
