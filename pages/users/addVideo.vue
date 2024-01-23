@@ -9,7 +9,7 @@ const config = useRuntimeConfig();
 definePageMeta({
   key: route => route.fullPath
 })
-
+const isFree=ref(1);
 const route = useRoute();
 const aid = ref(route.query.aid);
 const videoList = ref([]);
@@ -84,22 +84,11 @@ async function updateIsFree(id: number, isFree: number) {
   ;
 }
 
-onMounted(() => {
-  getList(1);
-});
-watch(() => route.query.aid, (newAid) => {
-  aid.value = newAid;
-  getList(1);
-});
-// const url = ref('https://picsum.photos/500/300')
-
+const file = ref(null);
 //视频分段上传
 const selectedFile = ref<File | null>(null);
 const uploadVideoProgress = ref<number | null>(null);
 const uploaderVideo = new FileUploader(config.public.baseUrl, updateVideoProgress);
-const selectedPreviewFile = ref<File | null>(null);
-const uploadPreviewProgress = ref<number | null>(null);
-const uploaderVideoPreview = new FileUploader(config.public.baseUrl, updateVideoPreviewProgress);
 
 const day = getCurrentDateFormatted();
 
@@ -127,23 +116,6 @@ function handleVideoFileChange(event: Event) {
   }
 }
 
-function handlePreviewVideoFileChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  if (target.files) {
-    const file = target.files[0];
-    if (file.type !== 'video/mp4') {
-      alert('Please select an MP4 video file.');
-      return;
-    }
-    const maxSize = 100 * 1024 * 1024; // 400MB in bytes
-    if (file.size > maxSize) {
-      alert('File size should not exceed 100MB.');
-      return;
-    }
-    selectedPreviewFile.value = file;
-  }
-}
-
 function updateVideoProgress(chunkNumber: number, totalChunks: number) {
   uploadVideoProgress.value = Math.round((chunkNumber / totalChunks) * 100);
 }
@@ -162,15 +134,15 @@ async function uploadVideoFile() {
       const data =await response.json();
       // const data= checkFileExistence(md5);
       //console.log(data);
-      const isFree = 2;
+      // const isFree = 2;
       if (data != null && data.code == 200) {
-        await addVideoRecord(md5, data.data.sourceUrl, isFree);
+        await addVideoRecord(md5, data.data.sourceUrl, isFree.value);
         //console.log('Upload update complete');
       } else {
         // 生成唯一标识符：文件名-时间戳
         const identifier = `${md5}_${selectedFile.value.name}`;
         // const identifier = 'unique-file-id'; // 根据需要生成或获取唯一标识符
-        await uploaderVideo.uploadFile(selectedFile.value, identifier, token, day, aid.value, isFree, md5);
+        await uploaderVideo.uploadFile(selectedFile.value, identifier, token, day, aid.value, isFree.value, md5);
         //console.log('Upload complete');
       }
       uploadVideoProgress.value = 100; // 更新进度条到100
@@ -181,11 +153,6 @@ async function uploadVideoFile() {
     }
   }
 }
-
-function updateVideoPreviewProgress(chunkNumber: number, totalChunks: number) {
-  uploadPreviewProgress.value = Math.round((chunkNumber / totalChunks) * 100);
-}
-
 //计算md5
 async function calculateMd5(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -238,51 +205,6 @@ async function addVideoRecord(md5: string, url: string, isFree: number) {
   }
 }
 
-async function uploadPreviewVideoFile() {
-  if (selectedPreviewFile.value) {
-    try {
-      const md5 = await calculateMd5(selectedPreviewFile.value);
-      const response = await fetch(`${config.public.baseUrl}/admin/userVideo/checkAllMd5?md5=${md5}`, {
-        method: 'get',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      });
-      const data =await response.json();
-      //console.log("checkFileExistence");
-      //console.log(data);
-      const isFree = 1;
-      if (data != null && data.code == 200) {
-        await addVideoRecord(md5, data.data.sourceUrl, isFree);
-        //console.log('Upload update complete');
-      } else {
-        const identifier = `${md5}_${selectedPreviewFile.value.name}`;
-        await uploaderVideoPreview.uploadFile(selectedPreviewFile.value, identifier, token, day, aid.value, isFree, md5);
-      }
-      uploadPreviewProgress.value = 100;
-      selectedPreviewFile.value = null;
-
-      $q.dialog({
-        title: '上传成功',
-        message: '预览视频上传成功。',
-        ok: true,
-      }).onOk(() => {
-        getList(1);
-      });
-
-    } catch (error) {
-      console.error('Upload failed', error);
-      uploadPreviewProgress.value = 0;
-      $q.notify({
-        type: 'negative',
-        message: '上传失败'
-      });
-    }
-  }
-}
-
-const file = ref(null);
 
 function getCurrentDateFormatted() {
   const now = new Date();
@@ -292,6 +214,13 @@ function getCurrentDateFormatted() {
 
   return `${year}-${month}-${day}`;
 }
+onMounted(() => {
+  getList(1);
+});
+watch(() => route.query.aid, (newAid) => {
+  aid.value = newAid;
+  getList(1);
+});
 </script>
 
 <template>
@@ -303,8 +232,7 @@ function getCurrentDateFormatted() {
   </q-breadcrumbs>
   <div class="q-pa-md" v-if="canUpload">
     <div>
-      <p class="text-body2">预览视频最大100M</p>
-      <p class="text-body2">正式视频最大1024M</p>
+      <p class="text-body2">视频最大1024M</p>
       <p class="text-body2">最多3个视频</p>
       <p class="text-body2">视频文件只支持.mp4</p>
       <p class="text-body2">推荐电脑端免费转码工具:<a
@@ -313,27 +241,19 @@ function getCurrentDateFormatted() {
   </div>
   <div>
     <div class="q-pa-md" v-if="canUpload">
+      <div>
+        <q-toggle
+            :false-value="1"
+            :label="`上传图片是否私有`"
+            :true-value="2"
+            color="green"
+            v-model="isFree"
+        />
+      </div>
 
       <q-card class="my-card">
-        <q-card-section>
-          <div class="text-subtitle1">上传预览视频（公开可看）</div>
-        </q-card-section>
-        <q-separator/>
-        <q-card-actions vertical>
-          <q-btn flat><input accept=".mp4" type="file" @change="handlePreviewVideoFileChange"/></q-btn>
-          <q-btn flat>
-            <button @click="uploadPreviewVideoFile">Upload Preview</button>
-          </q-btn>
-        </q-card-actions>
-        <q-separator/>
-        <q-card-actions vertical>
-          <div v-if="uploadPreviewProgress">
-            <p>Uploading Preview: {{ uploadPreviewProgress }}%</p>
-          </div>
-        </q-card-actions>
-
-        <q-card-section>
-          <div class="text-subtitle1">上传正式视频</div>
+        <q-card-section style="background-color: blue;">
+          <div class="text-subtitle1" style="color: white;">上传{{isFree==1? '公开':'私有'}}视频</div>
         </q-card-section>
         <q-separator/>
         <q-card-actions vertical>

@@ -37,31 +37,5 @@ export function tansParams(params: { [x: string]: any; }) {
 //             });
 //         });
 // }
-export function getBase64FromImageUrl(url: string) {
-    return fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            return "";
-        });
-}
 
 
-// 使用示例
-// const imageUrl = 'http://example.com/image.jpg';
-// getBase64FromImageUrl(imageUrl)
-//     .then(base64String => //console.log(base64String))
-//     .catch(error => console.error('Error:', error));

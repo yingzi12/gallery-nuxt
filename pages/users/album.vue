@@ -54,6 +54,33 @@ function editAlbum(id: number) {
   router.push("/users/editAlbum?id=" + id.toString());
 }
 
+function delAlbum(id: number,title:string) {
+  $q.dialog({
+    title: '通知',
+    message: '是否确认删除' + title + '',
+    ok: {
+      push: true
+    },
+    cancel: {
+      push: true,
+      color: 'negative'
+    },
+  }).onOk(async () => {
+    // server/api/admin/userSettingVip/updateStatus.get.ts
+    const response = await axios.get(`/api/admin/userAlbum/remove?id=${id}`, {
+      method: 'get',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.data.code == 200) {
+      await getList(1);
+    }
+  }).onCancel(() => {
+  });
+}
+
+
 function updateStatus(album: any, statusChoise: number) {
   const message = ref("");
   if (statusChoise == 1) {
@@ -172,7 +199,7 @@ function getImageUrl(imgUrl:string) {
                       :false-value="2"
                       :true-value="1" label="发布" @update:modelValue="updateStatus(album,album.status)"/>
             <q-btn class="gt-xs" dense flat icon="edit" round size="12px" @click="editAlbum(album.id)">修改</q-btn>
-            <q-btn class="gt-xs" dense flat icon="delete" round size="12px">删除</q-btn>
+            <q-btn class="gt-xs" v-if="album.status ==2" dense flat icon="delete" round size="12px" @click="delAlbum(album.id,album.title)">删除</q-btn>
           </q-item-section>
         </q-item>
 

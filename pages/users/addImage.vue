@@ -9,8 +9,6 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig();
-
-
 const $q = useQuasar();
 const route = useRoute();
 const aid = ref(route.query.aid);
@@ -18,11 +16,10 @@ const status = ref(Number(route.query.status));
 const canUpload = computed(() => status.value === 2); // 计算是否可以上传
 
 const updateUrl = ref(config.public.baseUrl + "/admin/userImage/uploadBatch");
-
+const isFree=ref(1);
 const imageList = ref([]);
 const total = ref(0);
 const maxPage = ref(0);
-const fourth= ref(true);
 
 const current=ref(1)
 
@@ -105,20 +102,10 @@ async function updateIsFree(image: any, isFree: number) {
       // await getList(1);
     }
   }).onCancel(() => {
-    // //console.log('Cancel')
-  })
-  ;
-}
-function onUploadFailed(error) {
-  // 上传失败处理
-  $q.notify({
-    color: 'negative',
-    message: '上传失败: ' + error.message
+    console.log('Cancel')
   });
-}
-// onMounted(() => {
-//   getList(1);
-// });
+};
+
 watch(() => route.query.aid, (newAid) => {
   aid.value = newAid;
   getList(1);
@@ -133,45 +120,29 @@ getList(1);
     </q-breadcrumbs-el>
     <q-breadcrumbs-el label="图片列表"/>
   </q-breadcrumbs>
-  <div>
-    <q-toggle
-        v-model="fourth"
-        checked-icon="check"
-        color="red"
-        label="Different icon for each state"
-        unchecked-icon="clear"
-    />
-  </div>
+
   <div class="q-pa-md" v-if="canUpload">
+    <div>
+      <q-toggle
+          :false-value="1"
+          :label="`上传图片是否私有`"
+          :true-value="2"
+          color="green"
+          v-model="isFree"
+      />
+    </div>
     <div class="q-gutter-sm row items-start">
       <q-uploader
-          :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `1`}]"
+          :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `${isFree}`}]"
           :headers="[{name: 'Authorization', value: `Bearer ${token}`}]"
           :url="updateUrl"
           :with-credentials="false"
           accept=".jpg, image/*"
           field-name="files"
-          label="上传图集预览图片（预览图片公开观看）"
+          :label="isFree==1? `上传图集公开图片（图片公开观看）`:`上传图集私有图片`"
           multiple
           batch
           max-files="100"
-          style="max-width: 300px"
-          @finish="getList(1)"
-      />
-    </div>
-  </div>
-  <div class="q-pa-md"  v-if="canUpload">
-    <div class="q-gutter-sm row items-start">
-      <q-uploader
-          :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `2`}]"
-          :headers="[{name: 'Authorization', value: `Bearer ${token}`}]"
-          :url="updateUrl"
-          :with-credentials="false"
-          accept=".jpg, image/*"
-          field-name="files"
-          label="上传图集私有图片"
-          multiple
-          batch
           style="max-width: 300px"
           @finish="getList(1)"
       />
@@ -221,4 +192,13 @@ getList(1);
 .example-item
   height: 290px
   width: 290px
+
+.flex-center
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+.flex-center
+  margin-top: 20px
+
 </style>

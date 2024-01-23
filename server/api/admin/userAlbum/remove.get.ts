@@ -1,5 +1,3 @@
-import {tansParams} from "~/server/utils/urlUtils";
-
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
     const query = getQuery(event)
@@ -7,9 +5,7 @@ export default defineEventHandler(async (event) => {
     const headers = event.req.headers;
     // 从请求头中获取 token
     const token = headers.authorization ? headers.authorization.split(' ')[1] : null;
-
-    // Use the GET parameters to make a GET request to `/album/list`
-    const response = await fetch(config.public.baseUrl+`/admin/userImage/list?${tansParams(query)}`, {
+    const response = await fetch(config.public.baseUrl+`/admin/userAlbum/remove/${query.id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -17,12 +13,10 @@ export default defineEventHandler(async (event) => {
         }
     );
     const dataJson = await response.json();
-    // const sourceWeb=config.public.sourceWeb;
-    const list= dataJson.data;
+    // //console.log(dataJson.data)
     return {
         code:dataJson.code,
-        message: "Album list retrieved!",
-        data: list,
-        total: dataJson.total,
+        message: dataJson.message,
+        data: dataJson.data,
     };
 });
