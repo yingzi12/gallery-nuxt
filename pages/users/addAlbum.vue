@@ -146,8 +146,8 @@ const chargeList = [
 ]
 
 function updateCharge(charge: number) {
-  price.value = 0.5;
-  vipPrice.value = 0.5;
+  price.value = 1.0;
+  vipPrice.value = 1.0;
 }
 
 
@@ -174,7 +174,7 @@ function updateCharge(charge: number) {
       </div>
       <q-input
           v-model="title"
-          :rules="[ val => val && val.length > 0 || '请输入图集名称']"
+          :rules="[ val => val && val.length >= 3 && val.length <= 30 || '请输入图集名称，长度3-30']"
           filled
           hint="输入图集名称"
           label="图集名称 *"
@@ -182,7 +182,7 @@ function updateCharge(charge: number) {
       />
       <q-input
           v-model="girl"
-          :rules="[ val => val && val.length > 0 || '请输入模特']"
+          :rules="[ val => val && val.length >= 3  && val.length <= 30 || '请输入模特，长度3-30']"
           filled
           hint="Name and surname"
           label="模特 *"
@@ -190,7 +190,7 @@ function updateCharge(charge: number) {
       />
       <q-input
           v-model="intro"
-          :rules="[ val => val && val.length > 0 || '请输入简介']"
+          :rules="[ val => val && val.length >= 5 && val.length <= 100 || '请输入简介，长度5-100']"
           filled
           label="简介 *"
           type="textarea"
@@ -204,7 +204,7 @@ function updateCharge(charge: number) {
       <!--      </div>-->
       <q-input
           v-model="tags"
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length >= 3 && val.length <= 100 || '请输入标签，长度3-30']"
           filled
           label="标签 *"
           lazy-rules
@@ -220,7 +220,7 @@ function updateCharge(charge: number) {
                  v-model="price"
                  :rules="[
           val => (val !== null && val !== '') || '请输入金额',
-        val => (val > 0.5 && val < 10000) || '金额不能小与0.5大于1000'
+        val => (val >= 1.0 && val <= 1000) || '金额不能小与1.0大于1000'
                   ]"
                  fill-mask="0"
                  filled
@@ -233,8 +233,8 @@ function updateCharge(charge: number) {
         <q-input v-if="charge =='3' || charge=='4'"
                  v-model="vipPrice"
                  :rules="[
-          val => (val !== null && val !== '') || '请输入金额',
-        val => (val > 0.5 && val < 10000) || '金额不能小与0.5不能大于1000'
+          val => (val !== null && val !== '') || '请输入VIP金额',
+        val => (val >= 1.0 && val <= 1000) || '金额不能小与1.0不能大于1000'
                   ]"
                  fill-mask="0"
                  filled

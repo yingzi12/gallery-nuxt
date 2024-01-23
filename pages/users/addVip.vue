@@ -38,21 +38,7 @@ const timeTypeList = [
   //   value: 5
   // }
 ]
-// if (accept.value !== true) {
-//   $q.notify({
-//     color: 'red-5',
-//     textColor: 'white',
-//     icon: 'warning',
-//     message: 'You need to accept the license and terms first'
-//   })
-// } else {
-//   $q.notify({
-//     color: 'green-4',
-//     textColor: 'white',
-//     icon: 'cloud_done',
-//     message: 'Submitted'
-//   })
-// }
+
 
 function onReset() {
   title.value = null
@@ -64,6 +50,7 @@ function onReset() {
 }
 
 async function onSubmit() {
+
   const response = await axios.post("/api/admin/userSettingVip/add", JSON.stringify({
     title: title.value,
     intro: intro.value,
@@ -110,7 +97,7 @@ async function onSubmit() {
     >
       <q-input
           v-model="title"
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length >= 3 && val.length <= 30  || '请输入会员名称，长度3-30']"
           filled
           hint="会员名称"
           label="会员名称 *"
@@ -118,14 +105,14 @@ async function onSubmit() {
       />
       <q-input
           v-model="intro"
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length >= 5 && val.length <= 100  || '请输入简介，长度5-100']"
           filled
           label="简介 *"
           type="textarea"
       />
       <q-input
           v-model="introduce"
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length >= 5 && val.length <= 300  || '请输入说明，长度5-300']"
           filled
           label="说明 *"
           type="textarea"
@@ -135,7 +122,7 @@ async function onSubmit() {
                  v-model="timeLong"
                  :rules="[
           val => (val !== null && val !== '') || '请输入时长',
-        val => (val > 0 && val < 1000) || '不能小与0，大于1000'
+        val => (val >= 1 && val < 1000) || '不能小与1，大于1000'
                   ]"
                  filled
                  label="会员时长 *"
@@ -155,7 +142,7 @@ async function onSubmit() {
           v-model="price"
           :rules="[
           val => (val !== null && val !== '') || '请输入金额',
-        val => (val > 0 && val < 10000) || '金额不能大于1000'
+        val => (val >= 1 && val < 1000) || '金额不能小与1，大于1000'
                   ]"
           fill-mask="0"
           filled
