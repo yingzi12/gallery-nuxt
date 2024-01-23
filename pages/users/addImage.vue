@@ -161,10 +161,10 @@ getList(1);
           <img :src="config.public.sourceWeb+image.imgUrl">
 
           <q-card-section>
-            <q-btn v-if="image.isFree == 2" color="primary" icon="visibility" square @click="updateIsFree(image,1)">
+            <q-btn v-if="image.isFree == 1" color="primary" icon="visibility" square @click="updateIsFree(image,1)">
               预览
             </q-btn>
-            <q-btn v-if="image.isFree == 1" color="primary" icon="sunny" square @click="updateIsFree(image,2)">正式
+            <q-btn v-if="image.isFree == 2" color="primary" icon="sunny" square @click="updateIsFree(image,2)">正式
             </q-btn>
             <q-btn color="primary" icon="delete" square @click="deleteImage(image.id)">删除</q-btn>
           </q-card-section>

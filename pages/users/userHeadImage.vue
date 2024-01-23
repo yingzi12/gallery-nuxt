@@ -46,10 +46,6 @@ const uploadImage = async () => {
       });
 
       const data = await  response.json();
-      // //console.log(data)
-      // //console.log(data.data)
-      // //console.log(data.code)
-
       if (data.code == 200) {
         useQuasar().dialog({
           title: '信息',
