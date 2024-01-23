@@ -15,7 +15,7 @@ const aid = ref(route.query.aid);
 const $q = useQuasar();
 
 const videoList = ref([]);
-let videoKey = ref(0);
+let videoKey = ref(-1);
 
 const album = ref({});
 const title = ref("图集网")
