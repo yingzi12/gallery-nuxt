@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     const list= dataJson.data;
     return {
         code:dataJson.code,
-        message: "Album list retrieved!",
+        message: dataJson.msg,
         data: list,
         total: dataJson.total,
     };

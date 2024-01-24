@@ -1,10 +1,20 @@
 <script lang="ts" setup>
-import {reactive, ref, toRefs} from "vue";
-
 import {useQuasar} from 'quasar'
 const $q = useQuasar();
 const config = useRuntimeConfig();
+const total = ref(0);
+const maxPage = ref(0);
 
+const current=ref(1)
+
+const queryData = reactive({
+  queryParams: {
+    pageNum: 1,
+    pageSize:20,
+    title: '',
+  }
+});
+const {queryParams} = toRefs(queryData);
 useHead({
   title: "图集网",
   meta: [
@@ -49,21 +59,22 @@ async function onSubmit() {
         push: true
       },
     }).onOk(async () => {
-       getList();
+       getList(1);
     }).onCancel(() => {
-       getList();
+       getList(1);
     });
   }
 }
 
 const findImageList = ref([]);
-const total = ref(0);
 
-async function getList() {
-  const response = await axios.get('/api/findImage/list')
+async function getList(page: number) {
+  queryParams.value.pageNum = page;
+  const response = await axios.get('/api/findImage/list?' + tansParams(queryParams.value))
   const data = response.data;
   if (data.code == 200) {
     total.value = data.total
+    maxPage.value=  total.value/ queryParams.value.pageSize+1;
     findImageList.value = data.data
   }
 }
@@ -79,15 +90,15 @@ async function handleAdd(id: number) {
         push: true
       },
     }).onOk(async () => {
-      getList();
+      getList(1);
     }).onCancel(() => {
-      getList();
+      getList(1);
     });
   }
 }
 
 
-getList()
+getList(1)
 
 function imageUrl(album) {
   if (album.sourceUrl != null && album.sourceUrl.startsWith('/image')) {
@@ -159,6 +170,16 @@ getRandom();
         <div v-if="findImageList.length <=0" class="caption">
           <p class="text-h6">{{ $t('form.noData') }}</p>
         </div>
+        <div class="q-pa-lg flex flex-center">
+          <q-pagination
+              v-model="current"
+              size="20"
+              :max="maxPage"
+              direction-links
+              @update:modelValue="getList(current)"
+          />
+        </div>
+
       </div>
     </div>
     <div>
@@ -187,7 +208,6 @@ getRandom();
         </q-intersection>
       </div>
     </div>
-
     <div class="row">
       <div class="col-2"></div>
       <div class="col-auto" style="margin: 0px">

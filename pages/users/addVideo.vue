@@ -279,8 +279,7 @@ watch(() => route.query.aid, (newAid) => {
     >
       <q-item>
         <q-item-section>
-          <!--          <img :src="config.public.sourceWeb+image.imgUrl">-->
-
+          <img  v-if="video.status == 3" :src="config.public.sourceWeb+video.imgUrl" style="height: 140px;width: 150px">
           <q-img v-if="video.status != 3"
                  src="/zhuanma.webp"
                  spinner-color="white"

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import {useQuasar} from "quasar";
+import ImageBatch from "~/pages/imageBatch.vue";
 
 definePageMeta({
   key: route => route.fullPath
@@ -12,7 +13,8 @@ const config = useRuntimeConfig();
 const $q = useQuasar();
 const route = useRoute();
 const aid = ref(route.query.aid);
-const updateUrl = ref(config.public.baseUrl + "/image/uploadBatch");
+const updateUrl = ref(`/image/uploadBatch?aid=${aid.value}`);
+
 const imageList = ref([]);
 const total = ref(0);
 const maxPage = ref(0);
@@ -38,7 +40,7 @@ async function getList(page: number) {
     });
     if (response.data.code == 200) {
       total.value = response.data.total;
-      maxPage.value=  total.value/20+1;
+      maxPage.value=  total.value/queryParams.value.pageSize+1;
       imageList.value = response.data.data;
     }
   } catch (error) {
@@ -115,34 +117,7 @@ getList(1);
   </q-breadcrumbs>
   <div class="q-pa-md">
     <div class="q-gutter-sm row items-start">
-      <q-uploader
-          :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `1`}]"
-          :url="updateUrl"
-          :with-credentials="false"
-          accept=".jpg, image/*"
-          field-name="file"
-          label="上传图集预览图片（预览图片公开观看）"
-          multiple
-          batch
-          max-files="100"
-          style="max-width: 300px"
-          @finish="getList(1)"
-      />
-    </div>
-  </div>
-  <div class="q-pa-md">
-    <div class="q-gutter-sm row items-start">
-      <q-uploader
-          :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `2`}]"
-          :url="updateUrl"
-          :with-credentials="false"
-          accept=".jpg, image/*"
-          field-name="file"
-          label="上传图集正式图片"
-          multiple
-          style="max-width: 300px"
-          @finish="getList(1)"
-      />
+      <ImageBatch :url="updateUrl" :on-upload-complete="() => getList(1)" />
     </div>
   </div>
   <q-th>图片列表（{{ total }}）</q-th>
@@ -187,6 +162,6 @@ getList(1);
   max-width: 350px
 
 .example-item
-  height: 290px
+  height: 490px
   width: 290px
 </style>

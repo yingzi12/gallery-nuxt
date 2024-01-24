@@ -174,7 +174,7 @@ function updateCharge(charge: number) {
       </div>
       <q-input
           v-model="title"
-          :rules="[ val => val && val.length >= 3 && val.length <= 30 || '请输入图集名称，长度3-30']"
+          :rules="[ val => val && val.length >= 2 && val.length <= 30 || '请输入图集名称，长度3-30']"
           filled
           hint="输入图集名称"
           label="图集名称 *"
@@ -182,7 +182,7 @@ function updateCharge(charge: number) {
       />
       <q-input
           v-model="girl"
-          :rules="[ val => val && val.length >= 3  && val.length <= 30 || '请输入模特，长度3-30']"
+          :rules="[ val => val && val.length >= 2  && val.length <= 30 || '请输入模特，长度3-30']"
           filled
           hint="Name and surname"
           label="模特 *"
@@ -204,13 +204,12 @@ function updateCharge(charge: number) {
       <!--      </div>-->
       <q-input
           v-model="tags"
-          :rules="[ val => val && val.length >= 3 && val.length <= 100 || '请输入标签，长度3-30']"
+          :rules="[ val => val && val.length >= 2 && val.length <= 100 || '请输入标签，长度3-30']"
           filled
           label="标签 *"
           lazy-rules
           type="text"
       />
-
       <div>
         <q-select v-model="charge" :options="chargeList" emit-value hint="付费方式" label="付费方式"
                   map-options

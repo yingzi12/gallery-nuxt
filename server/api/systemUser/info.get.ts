@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     // //console.log(dataJson.data)
     return {
         code:dataJson.code,
-        message: dataJson.message,
+        message: dataJson.msg,
         data: dataJson.data,
     };
 });

@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import pica from 'pica';
+import { compressAccurately } from 'image-conversion';
 const tokenCookie = useCookie('token');
 const token = tokenCookie.value;
 import {useRoute} from "vue-router";
 import {useQuasar} from "quasar";
+import ImageBatch from "~/pages/imageBatch.vue";
 
 definePageMeta({
   key: route => route.fullPath
@@ -15,7 +18,7 @@ const aid = ref(route.query.aid);
 const status = ref(Number(route.query.status));
 const canUpload = computed(() => status.value === 2); // 计算是否可以上传
 
-const updateUrl = ref(config.public.baseUrl + "/admin/userImage/uploadBatch");
+const updateUrl = ref(`/admin/userImage/uploadBatch?aid=${aid.value}`);
 const isFree=ref(1);
 const imageList = ref([]);
 const total = ref(0);
@@ -34,7 +37,7 @@ const queryData = reactive({
 const {queryParams} = toRefs(queryData);
 
 async function getList(page: number) {
-
+  current.value=page
   queryParams.value.aid = aid.value;
   queryParams.value.pageNum = page;
   try {
@@ -45,7 +48,7 @@ async function getList(page: number) {
     });
     if (response.data.code == 200) {
       total.value = response.data.total;
-      maxPage.value=  total.value/20+1;
+      maxPage.value=  total.value/10+1;
       imageList.value = response.data.data;
     }
   } catch (error) {
@@ -100,11 +103,12 @@ async function updateIsFree(image: any, isFree: number) {
     if (data.code === 200) {
       image.isFree = isFree;
       // await getList(1);
-    }
+    };
   }).onCancel(() => {
     console.log('Cancel')
   });
 };
+
 
 watch(() => route.query.aid, (newAid) => {
   aid.value = newAid;
@@ -122,31 +126,7 @@ getList(1);
   </q-breadcrumbs>
 
   <div class="q-pa-md" v-if="canUpload">
-    <div>
-      <q-toggle
-          :false-value="1"
-          :label="`上传图片是否私有`"
-          :true-value="2"
-          color="green"
-          v-model="isFree"
-      />
-    </div>
-    <div class="q-gutter-sm row items-start">
-      <q-uploader
-          :form-fields="[{name: 'aid', value:  `${aid}`},{name: 'isFree', value:  `${isFree}`}]"
-          :headers="[{name: 'Authorization', value: `Bearer ${token}`}]"
-          :url="updateUrl"
-          :with-credentials="false"
-          accept=".jpg, image/*"
-          field-name="files"
-          :label="isFree==1? `上传图集公开图片（图片公开观看）`:`上传图集私有图片`"
-          multiple
-          batch
-          max-files="100"
-          style="max-width: 300px"
-          @finish="getList(1)"
-      />
-    </div>
+    <ImageBatch :url="updateUrl" :on-upload-complete="() => getList(1)" />
   </div>
   <q-th>图片列表（{{ total }}）</q-th>
   <div class="q-pa-md">
@@ -161,12 +141,16 @@ getList(1);
           <img :src="config.public.sourceWeb+image.imgUrl">
 
           <q-card-section>
-            <q-btn v-if="image.isFree == 1" color="primary" icon="visibility" square @click="updateIsFree(image,1)">
-              预览
-            </q-btn>
-            <q-btn v-if="image.isFree == 2" color="primary" icon="sunny" square @click="updateIsFree(image,2)">正式
-            </q-btn>
-            <q-btn color="primary" icon="delete" square @click="deleteImage(image.id)">删除</q-btn>
+            <div>
+            <q-th v-if="image.isFree == 1" style="color: black"  square>
+              公开
+            </q-th>
+            <q-th v-if="image.isFree == 2" style="color:blue " square>私有
+            </q-th>
+            </div>
+            <div>
+            <q-btn color="red" icon="delete" square @click="deleteImage(image.id)">删除</q-btn>
+            </div>
           </q-card-section>
         </q-card>
       </q-intersection>
@@ -190,8 +174,9 @@ getList(1);
   max-width: 350px
 
 .example-item
-  height: 290px
+  height: 490px
   width: 290px
+  margin-bottom: 10px // 添加底部外边距
 
 .flex-center
   display: flex

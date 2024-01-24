@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     // //console.log(dataJson.data)
     return {
         code:dataJson.code,
-        message: "Album list retrieved!",
+        message: dataJson.msg,
         data: dataJson.data,
         total: dataJson.total,
     };

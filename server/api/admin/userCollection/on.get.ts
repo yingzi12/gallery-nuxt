@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     const dataJson = await response.json();
     return {
         code:dataJson.code,
-        message: dataJson.message,
+        message: dataJson.msg,
         data: dataJson.data,
     };
 });
