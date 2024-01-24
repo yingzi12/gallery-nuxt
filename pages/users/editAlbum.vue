@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import {useQuasar} from 'quasar';
- const tokenCookie = useCookie('token');
-    const token = tokenCookie.value;
+import pica from 'pica';
+import { compressAccurately } from 'image-conversion';
+const tokenCookie = useCookie('token');
+const token = tokenCookie.value;
 
 const router = useRouter(); // 使用 Vue Router 的 useRouter 函数
 
@@ -105,14 +107,17 @@ async function getDetail() {
 }
 
 async function handleImageUpload(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (file && file.size <= 2 * 1024 * 1024) { // 2MB限制
-    selectedImage.value = file;
 
-    const formData = new FormData();
-    formData.append('file', file);
 
     try {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) {
+        throw new Error("No file selected");
+      }
+      selectedImage.value = file;
+      const compressedFile = await compressIfNeeded(file);
+      const formData = new FormData();
+      formData.append('file', compressedFile);
       const response = await fetch(config.public.baseUrl + '/userAlbum/upload', {
         method: 'POST',
         body: formData,
@@ -139,9 +144,6 @@ async function handleImageUpload(event: Event) {
       console.error('Error uploading image:', error);
       notify('Error uploading image', 'red-5');
     }
-  } else {
-    alert('图片大小不能超过2MB');
-  }
 }
 
 const chargeList = [
@@ -175,6 +177,58 @@ function updateCharge(charge: number) {
 
 getDetail()
 
+async function compressIfNeeded(file) {
+  if (file.size > 500 * 1024) {
+    return compressImage(file).catch(error => {
+      console.error('Compression failed', error);
+      return file;
+    });
+  } else {
+    return file;
+  }
+}
+
+// 压缩图片的函数
+async function compressImage(file) {
+  console.log("---------compressImage---------------");
+  const picaInstance = pica();
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let targetWidth = img.width;
+        let targetHeight = img.height;
+        if (img.width > 1920) {
+          targetWidth = 1920;
+          targetHeight = (img.height / img.width) * 1920;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        picaInstance.resize(img, canvas, {
+          unsharpAmount: 80,
+          unsharpRadius: 0.6,
+          unsharpThreshold: 2
+        })
+            .then(resizedCanvas => picaInstance.toBlob(resizedCanvas, 'image/jpeg', 0.8))
+            .then(blob => {
+              resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+            })
+            .catch(error => {
+              reject(error);
+            });
+      };
+      img.onerror = () => reject(new Error('Image load error'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('FileReader error'));
+    reader.readAsDataURL(file);
+  });
+}
 </script>
 
 <template>
