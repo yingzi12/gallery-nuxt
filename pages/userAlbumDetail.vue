@@ -277,7 +277,7 @@ function getImageUrl(imgUrl) {
               <div>标签: {{ album.tags }}</div>
               <div>创建时间：{{ album.createTime }}</div>
               <div class="q-pa-md q-gutter-sm">
-                <q-btn v-if="album.charge != 1 && amount > 0.1" @click="openPayPalDialog()">购买 </q-btn>
+                <q-btn v-if="album.charge != 1 && amount >= 0" @click="openPayPalDialog()">购买 </q-btn>
                 <q-btn v-if="isCollection == 2" icon="favorite_border" @click="onCollection()">收藏</q-btn>
                 <q-btn v-if="isCollection == 1"  icon="favorite"  @click="closeCollection()">取消收藏</q-btn>
               </div>
