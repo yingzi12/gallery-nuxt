@@ -238,7 +238,6 @@ async function compressImage(file) {
   align-items: center;
   justify-content: center;
 }
-//遮罩
 .loading-state {
   position: relative;
 }
