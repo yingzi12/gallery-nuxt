@@ -6,7 +6,7 @@ import {ref} from "vue";
 const config = useRuntimeConfig();
 const router = useRouter(); // 使用 Vue Router 的 useRouter 函数
 
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token = tokenCookie.value;
 
 // 接收url里的参数

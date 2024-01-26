@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import PayaplCard from "~/pages/payaplCard.vue";
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token = tokenCookie.value;
 const route = useRoute();
 const config = useRuntimeConfig();

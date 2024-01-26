@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const config = useRuntimeConfig();
 
 const token = tokenCookie.value;
@@ -168,11 +168,14 @@ function getImageUrl(imgUrl:string) {
               {{ album.intro }}
             </q-item-label>
             <q-item-label class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
-              <span class="cursor-pointer"><a
-                  :href="'/users/addVideo?aid='+album.id+'&title='+album.title+'&status='+album.status">视频： {{ album.numberVideo }}</a></span>
+              <router-link :to="'/users/addVideo?aid='+album.id+'&title='+album.title+'&status='+album.status">
+                视频： {{ album.numberVideo }}
+              </router-link>
             </q-item-label>
             <q-item-label class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
-              <span class="cursor-pointer"><a :href="'/users/addImage?aid='+album.id+'&status='+album.status+'&title='+album.title">照片： {{album.numberPhotos}}</a></span>
+              <router-link :to="'/users/addImage?aid='+album.id+'&status='+album.status+'&title='+album.title">
+                照片： {{album.numberPhotos}}
+              </router-link>
             </q-item-label>
           </q-item-section>
           <q-item-section side>

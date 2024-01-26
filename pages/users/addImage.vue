@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import pica from 'pica';
 import { compressAccurately } from 'image-conversion';
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token = tokenCookie.value;
 import {useRoute} from "vue-router";
 import {useQuasar} from "quasar";

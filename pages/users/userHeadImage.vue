@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token = tokenCookie.value;
 const userCookie = useCookie('user');
 const user = userCookie.value;

@@ -6,7 +6,7 @@ import PayaplCard from "~/pages/payaplCard.vue";
 import {useRoute} from "vue-router";
 // 接收url里的参数
 const route = useRoute();
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const productAmount = ref(route.query.productAmount);
 const productId = ref(route.query.productId);
 const productIntro = ref(route.query.productIntro);

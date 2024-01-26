@@ -8,7 +8,7 @@ const router = useRouter(); // 使用 Vue Router 的 useRouter 函数
 const amount=ref(0.0);
 const intro=ref("");
 
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token = tokenCookie.value;
 
 // 接收url里的参数

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import PayaplCard from "~/pages/payaplCard.vue";
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token = tokenCookie.value;
 const current = ref(1)
 const slide = ref('first')

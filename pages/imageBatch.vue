@@ -51,7 +51,7 @@ const config = useRuntimeConfig();
 const totalSelected = ref(0); // 已选择的图片数量
 const totalUploaded = ref(0); // 已上传的图片数量
 
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token=tokenCookie.value;
 //接受参数
 const props = defineProps({
@@ -98,18 +98,72 @@ const removeFile = (index) => {
 };
 
 // 循环调用，解决在上传大文件图片时，数据过多导致的失败问题
+// async function uploadFile() {
+//   uploadState.isUploading = true;
+//   uploadState.disableButtons = true;
+//
+//   // 每批次处理的文件数
+//   const batchSize = 10;
+//
+//   for (let i = 0; i < selectedFiles.value.length; i += batchSize) {
+//     // 获取当前批次的文件
+//     const batchFiles = selectedFiles.value.slice(i, i + batchSize);
+//
+//     try {
+//       const compressedFiles = await Promise.all(batchFiles.map(file => compressIfNeeded(file)));
+//
+//       const formData = new FormData();
+//       formData.append('isFree', isFree.value.toString());
+//       compressedFiles.forEach(file => {
+//         formData.append('files', file);
+//       });
+//
+//       const url = `${config.public.baseUrl}${props.url}&isFree=${isFree.value}`;
+//       const response = await fetch(url, {
+//         method: 'POST',
+//         body: formData,
+//         headers: { 'Authorization': `Bearer ${token}` }
+//       });
+//
+//       const data = await response.json();
+//       if (data.code === 200) {
+//         totalUploaded.value += compressedFiles.length; // 更新已上传图片的数量
+//         // 填充上传成功状态
+//         compressedFiles.forEach((_, index) => {
+//           filesStatus.value[i + index] = '上传成功';
+//         });
+//       } else {
+//         // 填充上传失败状态
+//         compressedFiles.forEach((_, index) => {
+//           filesStatus.value[i + index] = '上传失败';
+//           filesErrors.value[i + index] = data.msg;
+//         });
+//       }
+//     } catch (error) {
+//       console.error('上传错误', error);
+//       compressedFiles.forEach((_, index) => {
+//         filesStatus.value[i + index] = '上传失败';
+//         filesErrors.value[i + index] = "未知错误";
+//       });
+//     }
+//   }
+//
+//   uploadState.isUploading = false;
+//   uploadState.disableButtons = false;
+//   // 上传完成后调用onUploadComplete方法
+//   if (props.onUploadComplete) {
+//     props.onUploadComplete(); // 调用这个方法
+//   }
+// }
 async function uploadFile() {
   uploadState.isUploading = true;
   uploadState.disableButtons = true;
 
-  // 每批次处理的文件数
   const batchSize = 10;
 
-  for (let i = 0; i < selectedFiles.value.length; i += batchSize) {
-    // 获取当前批次的文件
-    const batchFiles = selectedFiles.value.slice(i, i + batchSize);
-
-    try {
+  try {
+    for (let i = 0; i < selectedFiles.value.length; i += batchSize) {
+      const batchFiles = selectedFiles.value.slice(i, i + batchSize);
       const compressedFiles = await Promise.all(batchFiles.map(file => compressIfNeeded(file)));
 
       const formData = new FormData();
@@ -127,32 +181,27 @@ async function uploadFile() {
 
       const data = await response.json();
       if (data.code === 200) {
-        totalUploaded.value += compressedFiles.length; // 更新已上传图片的数量
-        // 填充上传成功状态
+        totalUploaded.value += compressedFiles.length;
         compressedFiles.forEach((_, index) => {
           filesStatus.value[i + index] = '上传成功';
         });
       } else {
-        // 填充上传失败状态
-        compressedFiles.forEach((_, index) => {
-          filesStatus.value[i + index] = '上传失败';
-          filesErrors.value[i + index] = data.msg;
-        });
+        throw new Error(data.msg || '上传失败');
       }
-    } catch (error) {
-      console.error('上传错误', error);
-      compressedFiles.forEach((_, index) => {
-        filesStatus.value[i + index] = '上传失败';
-        filesErrors.value[i + index] = "未知错误";
-      });
     }
+  } catch (error) {
+    console.error('上传错误', error);
+    selectedFiles.value.forEach((_, index) => {
+      filesStatus.value[index] = '上传失败';
+      filesErrors.value[index] = error.message || "未知错误";
+    });
+  } finally {
+    uploadState.isUploading = false;
+    uploadState.disableButtons = false;
   }
 
-  uploadState.isUploading = false;
-  uploadState.disableButtons = false;
-  // 上传完成后调用onUploadComplete方法
   if (props.onUploadComplete) {
-    props.onUploadComplete(); // 调用这个方法
+    props.onUploadComplete();
   }
 }
 
@@ -170,7 +219,6 @@ async function compressIfNeeded(file) {
 
 // 压缩图片的函数
 async function compressImage(file) {
-  console.log("---------compressImage---------------");
   const picaInstance = pica();
 
   return new Promise((resolve, reject) => {

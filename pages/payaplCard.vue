@@ -33,7 +33,7 @@
 import {defineProps, onMounted} from 'vue';
 import {useQuasar} from "quasar";
 const $q = useQuasar();
-const tokenCookie = useCookie('token');
+const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
 const token=tokenCookie.value;
 const props = defineProps({
   amount: {
