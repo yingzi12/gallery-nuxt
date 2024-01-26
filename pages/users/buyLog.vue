@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 definePageMeta({
   key: route => route.fullPath

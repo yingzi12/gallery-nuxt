@@ -8,7 +8,7 @@ const router = useRouter(); // 使用 Vue Router 的 useRouter 函数
 const amount=ref(0.0);
 const intro=ref("");
 
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 
 // 接收url里的参数
@@ -355,7 +355,7 @@ function getImageUrl(imgUrl) {
                 <img :src="getImageUrl(album.imgUrl)">
                 <q-card-section>
                   <div class="text-h6">
-                    <a :href='"/detail?aid="+album.id'>
+                    <a :href='"/userAlbumDetail?aid="+album.id+"&userId="+album.userId'>
                       <p class="text-caption  two-line-clamp"> {{ album.title }} </p>
                     </a>
                     <p class="text-caption" style="padding: 0px"> {{ album.createTime }} </p>

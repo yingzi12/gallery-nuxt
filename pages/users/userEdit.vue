@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useQuasar} from 'quasar';
 import {useRouter} from 'vue-router';
- const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+ const tokenCookie = useCookie('token',{path:"/"});
     const token = tokenCookie.value;
 const idCookie = useCookie('id');
 const id = idCookie.value;

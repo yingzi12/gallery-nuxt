@@ -12,7 +12,7 @@ useHead({
 
   ],
 })
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 const invite = ref(route.query.invite);
 

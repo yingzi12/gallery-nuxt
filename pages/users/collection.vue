@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 //收藏
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const config = useRuntimeConfig();
 
 const token = tokenCookie.value;

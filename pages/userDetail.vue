@@ -4,7 +4,7 @@ import {useRoute} from "vue-router";
 const config = useRuntimeConfig();
 const route = useRoute();
 
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 const userId = ref(route.query.userId);
 const current = ref(1)

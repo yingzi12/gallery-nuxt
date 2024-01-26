@@ -3,7 +3,7 @@ definePageMeta({
   key: route => route.fullPath
 })
 const config = useRuntimeConfig();
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 const idCookie = useCookie('id');
 const id = idCookie.value;

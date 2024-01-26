@@ -60,11 +60,11 @@ async function onSubmit() {
     //console.log("login")
     //console.log(data)
     if (data.code == 200) {
-      const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"})
+      const tokenCookie = useCookie('token',{path:"/"})
       tokenCookie.value=data.token
-      const idCookie = useCookie('id',{domain:"aiavr.com",path:"/"})
+      const idCookie = useCookie('id',{path:"/"})
       idCookie.value=data.user.id
-      const userInfoCookie = useCookie('userInfo',{domain:"aiavr.com",path:"/"})
+      const userInfoCookie = useCookie('userInfo',{path:"/"})
       userInfoCookie.value=data.user
       router.push('/users/'); // 或者其他页面
     } else {
@@ -89,7 +89,7 @@ async function onSubmit() {
 }
 
 function isLogin() {
-  const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+  const tokenCookie = useCookie('token',{path:"/"});
   const token = tokenCookie.value;
   if (token) {
     // 如果用户未登录，则重定向到登录页面

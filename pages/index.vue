@@ -4,7 +4,7 @@ import {tansParams} from "~/server/utils/urlUtils";
 import {useRoute} from "vue-router";
 const config = useRuntimeConfig();
 
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 const route = useRoute();
 

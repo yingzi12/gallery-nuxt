@@ -51,7 +51,7 @@ const config = useRuntimeConfig();
 const totalSelected = ref(0); // 已选择的图片数量
 const totalUploaded = ref(0); // 已上传的图片数量
 
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token=tokenCookie.value;
 //接受参数
 const props = defineProps({

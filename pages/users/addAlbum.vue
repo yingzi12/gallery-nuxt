@@ -2,7 +2,7 @@
 import {useQuasar} from 'quasar';
 import pica from 'pica';
 import { compressAccurately } from 'image-conversion';
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 
 const router = useRouter(); // 使用 Vue Router 的 useRouter 函数

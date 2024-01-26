@@ -6,7 +6,7 @@ const users = ref(null)
 const previewImage = ref("/favicon.png")
 const config = useRuntimeConfig();
 
-const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+const tokenCookie = useCookie('token',{path:"/"});
 const token = tokenCookie.value;
 const idCookie = useCookie('id');
 const id = idCookie.value;
@@ -55,7 +55,7 @@ getDetail();
 
 const logout = async () => {
   //console.log("------logout------------")
-  const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+  const tokenCookie = useCookie('token',{path:"/"});
   tokenCookie.value=null;
   const idCookie = useCookie('id');
   idCookie.value=null;

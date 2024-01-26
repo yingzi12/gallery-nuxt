@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 //关注
- const tokenCookie = useCookie('token',{domain:"aiavr.com",path:"/"});
+ const tokenCookie = useCookie('token',{path:"/"});
     const token = tokenCookie.value;
 
 
